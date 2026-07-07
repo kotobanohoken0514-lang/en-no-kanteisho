@@ -6,15 +6,16 @@
 <title>縁の鑑定書</title>
 <style>
   :root {
-    --night: #141024;
-    --night-2: #241b3d;
-    --thread: #e7b84e;
-    --thread-soft: #f0d089;
-    --ink: #f4f0e6;
-    --ink-dim: #b9b2c9;
-    --field: rgba(255,255,255,0.04);
-    --field-border: rgba(231,184,78,0.28);
-    --field-focus: rgba(231,184,78,0.75);
+    --washi: #f7f2e7;
+    --washi-field: #fffdf8;
+    --gold: #c9b784;
+    --gold-soft: #a08b4f;
+    --sumi: #2b2620;
+    --sumi-dim: #6b6355;
+    --sumi-faint: #8a8170;
+    --shu: #c8443b;
+    --field-border: #cdbf9d;
+    --field-focus: #b89a5a;
   }
 
   * { box-sizing: border-box; }
@@ -23,62 +24,79 @@
     margin: 0;
     min-height: 100vh;
     font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
-    color: var(--ink);
-    background:
-      radial-gradient(1200px 600px at 50% -10%, rgba(231,184,78,0.10), transparent 60%),
-      linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
-    background-attachment: fixed;
+    color: var(--sumi);
+    background: #ece7db;
     display: flex;
     justify-content: center;
-    padding: 40px 20px 64px;
+    padding: 36px 16px 72px;
   }
 
   .sheet {
     width: 100%;
     max-width: 560px;
-  }
-
-  /* 縁の糸：署名的な一本線 */
-  .thread {
-    height: 2px;
-    width: 100%;
-    background: linear-gradient(90deg, transparent, var(--thread) 20%, var(--thread-soft) 50%, var(--thread) 80%, transparent);
-    opacity: 0.8;
-    margin: 0 auto 28px;
+    background: var(--washi);
+    border-radius: 16px;
+    /* 証書らしい金の二重罫 */
+    box-shadow:
+      inset 0 0 0 7px var(--washi),
+      inset 0 0 0 8px var(--gold),
+      0 8px 30px rgba(60,50,30,0.10);
+    padding: 40px 30px 34px;
   }
 
   header {
+    position: relative;
     text-align: center;
-    margin-bottom: 36px;
+    margin-bottom: 34px;
+  }
+
+  /* 朱印：縁之鑑定 */
+  .seal {
+    position: absolute;
+    top: -8px;
+    right: 0;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 2px solid var(--shu);
+    color: var(--shu);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 14px;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    text-align: center;
+    transform: rotate(-8deg);
   }
 
   .eyebrow {
     font-size: 13px;
-    letter-spacing: 0.35em;
-    color: var(--thread-soft);
+    letter-spacing: 0.32em;
+    color: var(--gold-soft);
     margin: 0 0 12px;
-    padding-left: 0.35em;
+    padding-left: 0.32em;
   }
 
   h1 {
     font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", serif;
     font-weight: 600;
-    font-size: 34px;
+    font-size: 32px;
     letter-spacing: 0.12em;
-    margin: 0 0 14px;
+    margin: 0 0 16px;
     padding-left: 0.12em;
+    color: var(--sumi);
   }
 
   .lead {
     font-size: 14px;
-    line-height: 1.9;
-    color: var(--ink-dim);
+    line-height: 1.95;
+    color: var(--sumi-dim);
     margin: 0;
   }
 
-  .field {
-    margin-bottom: 26px;
-  }
+  .field { margin-bottom: 24px; }
 
   .field label {
     display: block;
@@ -86,12 +104,13 @@
     font-weight: 600;
     margin-bottom: 6px;
     letter-spacing: 0.04em;
+    color: var(--sumi);
   }
 
   .field .hint {
     display: block;
     font-size: 12.5px;
-    color: var(--ink-dim);
+    color: var(--sumi-faint);
     margin-bottom: 10px;
     line-height: 1.7;
   }
@@ -99,69 +118,63 @@
   input[type="text"],
   textarea {
     width: 100%;
-    background: var(--field);
+    background: var(--washi-field);
     border: 1px solid var(--field-border);
-    border-radius: 10px;
-    color: var(--ink);
+    border-radius: 9px;
+    color: var(--sumi);
     font-size: 16px; /* iOSで拡大されないよう16px */
     font-family: inherit;
-    padding: 14px 16px;
+    padding: 13px 15px;
     line-height: 1.7;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
   }
 
-  textarea {
-    resize: vertical;
-    min-height: 96px;
-  }
+  textarea { resize: vertical; min-height: 92px; }
 
   input[type="text"]::placeholder,
-  textarea::placeholder {
-    color: rgba(185,178,201,0.55);
-  }
+  textarea::placeholder { color: #b3a98f; }
 
   input[type="text"]:focus,
   textarea:focus {
     outline: none;
     border-color: var(--field-focus);
-    box-shadow: 0 0 0 3px rgba(231,184,78,0.15);
+    box-shadow: 0 0 0 3px rgba(184,154,90,0.18);
   }
 
   .cta {
     display: block;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 10px;
     padding: 16px;
     font-size: 16px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--night);
-    background: linear-gradient(180deg, var(--thread-soft), var(--thread));
+    letter-spacing: 0.1em;
+    color: #fff;
+    background: var(--shu);
     border: none;
-    border-radius: 12px;
+    border-radius: 11px;
     cursor: pointer;
-    transition: transform 0.12s ease, filter 0.18s ease;
+    transition: filter 0.18s ease, transform 0.12s ease;
   }
 
-  .cta:hover { filter: brightness(1.06); }
+  .cta:hover { filter: brightness(1.05); }
   .cta:active { transform: translateY(1px); }
-  .cta:focus-visible { outline: 3px solid var(--thread-soft); outline-offset: 3px; }
+  .cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
   .note {
-    margin-top: 18px;
+    margin-top: 16px;
     font-size: 12px;
     line-height: 1.8;
-    color: var(--ink-dim);
+    color: var(--sumi-faint);
     text-align: center;
   }
 
-  /* 送信後の確認表示 */
   .result {
     display: none;
     margin-top: 28px;
     padding: 22px 20px;
-    background: rgba(231,184,78,0.06);
-    border: 1px solid var(--field-border);
+    background: #fbf7ec;
+    border: 1px solid var(--gold);
     border-radius: 12px;
     line-height: 1.9;
     font-size: 14px;
@@ -174,24 +187,28 @@
     font-size: 18px;
     letter-spacing: 0.08em;
     margin: 0 0 14px;
-    color: var(--thread-soft);
+    color: var(--shu);
   }
 
   .result dl { margin: 0; }
-  .result dt { font-size: 12px; color: var(--ink-dim); letter-spacing: 0.06em; }
-  .result dd { margin: 2px 0 14px; color: var(--ink); white-space: pre-wrap; }
-  .result .status { margin-top: 6px; font-size: 12.5px; color: var(--ink-dim); }
+  .result dt { font-size: 12px; color: var(--sumi-faint); letter-spacing: 0.06em; }
+  .result dd { margin: 2px 0 14px; color: var(--sumi); white-space: pre-wrap; }
+  .result .status { margin-top: 6px; font-size: 12.5px; color: var(--sumi-dim); }
 
   @media (prefers-reduced-motion: reduce) {
     .cta { transition: none; }
+  }
+
+  @media (max-width: 600px) {
+    .sheet { padding: 34px 22px 28px; }
+    h1 { font-size: 28px; }
   }
 </style>
 </head>
 <body>
   <main class="sheet">
-    <div class="thread"></div>
-
     <header>
+      <div class="seal">縁之<br>鑑定</div>
       <p class="eyebrow">縁の鑑定書</p>
       <h1>その出会いを、鑑定します</h1>
       <p class="lead">
