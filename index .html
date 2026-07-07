@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>縁の鑑定書</title>
+<style>
+  :root {
+    --night: #141024;
+    --night-2: #241b3d;
+    --thread: #e7b84e;
+    --thread-soft: #f0d089;
+    --ink: #f4f0e6;
+    --ink-dim: #b9b2c9;
+    --field: rgba(255,255,255,0.04);
+    --field-border: rgba(231,184,78,0.28);
+    --field-focus: rgba(231,184,78,0.75);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(231,184,78,0.10), transparent 60%),
+      linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px 64px;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* 縁の糸：署名的な一本線 */
+  .thread {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--thread) 20%, var(--thread-soft) 50%, var(--thread) 80%, transparent);
+    opacity: 0.8;
+    margin: 0 auto 28px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    color: var(--thread-soft);
+    margin: 0 0 12px;
+    padding-left: 0.35em;
+  }
+
+  h1 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", serif;
+    font-weight: 600;
+    font-size: 34px;
+    letter-spacing: 0.12em;
+    margin: 0 0 14px;
+    padding-left: 0.12em;
+  }
+
+  .lead {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-dim);
+    margin: 0;
+  }
+
+  .field {
+    margin-bottom: 26px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .field .hint {
+    display: block;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    background: var(--field);
+    border: 1px solid var(--field-border);
+    border-radius: 10px;
+    color: var(--ink);
+    font-size: 16px; /* iOSで拡大されないよう16px */
+    font-family: inherit;
+    padding: 14px 16px;
+    line-height: 1.7;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 96px;
+  }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: rgba(185,178,201,0.55);
+  }
+
+  input[type="text"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--field-focus);
+    box-shadow: 0 0 0 3px rgba(231,184,78,0.15);
+  }
+
+  .cta {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--night);
+    background: linear-gradient(180deg, var(--thread-soft), var(--thread));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.12s ease, filter 0.18s ease;
+  }
+
+  .cta:hover { filter: brightness(1.06); }
+  .cta:active { transform: translateY(1px); }
+  .cta:focus-visible { outline: 3px solid var(--thread-soft); outline-offset: 3px; }
+
+  .note {
+    margin-top: 18px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--ink-dim);
+    text-align: center;
+  }
+
+  /* 送信後の確認表示 */
+  .result {
+    display: none;
+    margin-top: 28px;
+    padding: 22px 20px;
+    background: rgba(231,184,78,0.06);
+    border: 1px solid var(--field-border);
+    border-radius: 12px;
+    line-height: 1.9;
+    font-size: 14px;
+  }
+
+  .result.show { display: block; }
+
+  .result h2 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    margin: 0 0 14px;
+    color: var(--thread-soft);
+  }
+
+  .result dl { margin: 0; }
+  .result dt { font-size: 12px; color: var(--ink-dim); letter-spacing: 0.06em; }
+  .result dd { margin: 2px 0 14px; color: var(--ink); white-space: pre-wrap; }
+  .result .status { margin-top: 6px; font-size: 12.5px; color: var(--ink-dim); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+    <div class="thread"></div>
+
+    <header>
+      <p class="eyebrow">縁の鑑定書</p>
+      <h1>その出会いを、鑑定します</h1>
+      <p class="lead">
+        この出会いは、宇宙が138億年をかけて準備した必然かもしれません。<br>
+        3つだけ教えてください。あなただけの鑑定書をお届けします。
+      </p>
+    </header>
+
+    <div class="field">
+      <label for="relation">① 相手との関係</label>
+      <span class="hint">例：恋人 / 親友 / 職場の同僚 / 家族 など</span>
+      <input type="text" id="relation" placeholder="例：大学時代からの親友">
+    </div>
+
+    <div class="field">
+      <label for="situation">② 出会ったときの状況</label>
+      <span class="hint">どこで、どんなきっかけで出会いましたか？</span>
+      <textarea id="situation" placeholder="例：新歓のサークル説明会で、たまたま隣の席になった"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="episode">③ 印象的だったこと</label>
+      <span class="hint">最初のひと言、忘れられない場面など</span>
+      <textarea id="episode" placeholder="例：緊張していた私に「一緒に回ろう」と声をかけてくれた"></textarea>
+    </div>
+
+    <button class="cta" id="submit">鑑定してもらう</button>
+    <p class="note">エンタメ目的のAI鑑定です。個人名など特定の情報は入れないでください。</p>
+
+    <section class="result" id="result" aria-live="polite">
+      <h2>入力を受け取りました</h2>
+      <dl>
+        <dt>相手との関係</dt><dd id="out-relation"></dd>
+        <dt>出会ったときの状況</dt><dd id="out-situation"></dd>
+        <dt>印象的だったこと</dt><dd id="out-episode"></dd>
+      </dl>
+      <p class="status">※ 今はここまで（画面のテスト）。次の段階で、このボタンから決済 → 鑑定へつなぎます。</p>
+    </section>
+  </main>
+
+  <script>
+    const btn = document.getElementById('submit');
+    const result = document.getElementById('result');
+
+    btn.addEventListener('click', function () {
+      const relation  = document.getElementById('relation').value.trim();
+      const situation = document.getElementById('situation').value.trim();
+      const episode   = document.getElementById('episode').value.trim();
+
+      if (!relation && !situation && !episode) {
+        alert('3つのうち、どれか1つでも入力してから押してみてください。');
+        return;
+      }
+
+      document.getElementById('out-relation').textContent  = relation  || '（未入力）';
+      document.getElementById('out-situation').textContent = situation || '（未入力）';
+      document.getElementById('out-episode').textContent   = episode   || '（未入力）';
+
+      result.classList.add('show');
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+</html>
