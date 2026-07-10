@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2縁まとめ鑑定書</title>
+<style>
+  :root {
+    --washi: #f7f2e7;
+    --washi-field: #fffdf8;
+    --gold: #c9b784;
+    --gold-soft: #a08b4f;
+    --sumi: #2b2620;
+    --sumi-dim: #6b6355;
+    --sumi-faint: #8a8170;
+    --shu: #c8443b;
+    --field-border: #cdbf9d;
+    --field-focus: #b89a5a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--sumi);
+    background: #ece7db;
+    display: flex;
+    justify-content: center;
+    padding: 36px 16px 72px;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 560px;
+    background: var(--washi);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 0 0 7px var(--washi),
+      inset 0 0 0 8px var(--gold),
+      0 8px 30px rgba(60,50,30,0.10);
+    padding: 40px 30px 34px;
+  }
+
+  header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .seal {
+    position: absolute;
+    top: -8px;
+    right: 0;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 2px solid var(--shu);
+    color: var(--shu);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 14px;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    text-align: center;
+    transform: rotate(-8deg);
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    color: var(--gold-soft);
+    margin: 0 0 12px;
+    padding-left: 0.32em;
+  }
+
+  h1 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", serif;
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 0.12em;
+    margin: 0 0 16px;
+    padding-left: 0.12em;
+    color: var(--sumi);
+  }
+
+  .lead {
+    font-size: 14px;
+    line-height: 1.95;
+    color: var(--sumi-dim);
+    margin: 0;
+  }
+
+  /* session_id 自己診断バナー（決済を通ってきたかを目で確認する用） */
+  .session-banner {
+    margin: 22px 0 4px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    border: 1px solid;
+    word-break: break-all;
+  }
+  .session-banner.ok {
+    background: #f2f6ee;
+    border-color: #bcd0a8;
+    color: #4a5c3a;
+  }
+  .session-banner.ng {
+    background: #fbefee;
+    border-color: #e2b6b2;
+    color: #9a453d;
+  }
+  .session-banner b { letter-spacing: 0.04em; }
+
+  /* 縁①・縁② の見出し */
+  .en-group { margin-top: 30px; }
+  .en-title {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 17px;
+    letter-spacing: 0.1em;
+    color: var(--shu);
+    margin: 0 0 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gold);
+  }
+  .en-title-note {
+    font-size: 12px;
+    color: var(--sumi-faint);
+    margin: 0 0 18px;
+    line-height: 1.7;
+  }
+
+  .field { margin-bottom: 22px; }
+
+  .field label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+    color: var(--sumi);
+  }
+
+  .field .hint {
+    display: block;
+    font-size: 12.5px;
+    color: var(--sumi-faint);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    background: var(--washi-field);
+    border: 1px solid var(--field-border);
+    border-radius: 9px;
+    color: var(--sumi);
+    font-size: 16px;
+    font-family: inherit;
+    padding: 13px 15px;
+    line-height: 1.7;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  textarea { resize: vertical; min-height: 84px; }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder { color: #b3a98f; }
+
+  input[type="text"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--field-focus);
+    box-shadow: 0 0 0 3px rgba(184,154,90,0.18);
+  }
+
+  .cta {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #fff;
+    background: var(--shu);
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: filter 0.18s ease, transform 0.12s ease;
+  }
+  .cta:hover { filter: brightness(1.05); }
+  .cta:active { transform: translateY(1px); }
+  .cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .cta:disabled { opacity: 0.55; cursor: default; }
+
+  .note {
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--sumi-faint);
+    text-align: center;
+  }
+
+  .result {
+    display: none;
+    margin-top: 28px;
+    padding: 22px 20px;
+    background: #fbf7ec;
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    line-height: 1.9;
+    font-size: 14px;
+  }
+  .result.show { display: block; }
+  .result h2 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    margin: 0 0 14px;
+    color: var(--shu);
+  }
+  .result .body { white-space: pre-wrap; color: var(--sumi); }
+  .result .status { margin-top: 12px; font-size: 12.5px; color: var(--sumi-dim); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta { transition: none; }
+  }
+  @media (max-width: 600px) {
+    .sheet { padding: 34px 22px 28px; }
+    h1 { font-size: 27px; }
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <div class="seal">縁之<br>鑑定</div>
+      <p class="eyebrow">2縁まとめ鑑定書</p>
+      <h1>ふたつの出会いを、鑑定します</h1>
+      <p class="lead">
+        その出会いは、宇宙が138億年をかけて準備した必然かもしれません。<br>
+        大切なふたつの縁について、それぞれ教えてください。
+      </p>
+    </header>
+
+    <!-- session_id 自己診断バナー：JSで内容を差し替える -->
+    <div class="session-banner ng" id="session-banner">確認中…</div>
+
+    <!-- 縁① -->
+    <div class="en-group">
+      <p class="en-title">縁 その一</p>
+      <p class="en-title-note">ひとつめの出会いについて教えてください。</p>
+
+      <div class="field">
+        <label for="relation1">① 相手との関係</label>
+        <span class="hint">例：恋人 / 親友 / 職場の同僚 / 家族 など</span>
+        <input type="text" id="relation1" placeholder="例：大学時代からの親友">
+      </div>
+      <div class="field">
+        <label for="situation1">② 出会ったときの状況</label>
+        <span class="hint">どこで、どんなきっかけで出会いましたか？</span>
+        <textarea id="situation1" placeholder="例：新歓のサークル説明会で、たまたま隣の席になった"></textarea>
+      </div>
+      <div class="field">
+        <label for="episode1">③ 印象的だったこと</label>
+        <span class="hint">最初のひと言、忘れられない場面など</span>
+        <textarea id="episode1" placeholder="例：緊張していた私に「一緒に回ろう」と声をかけてくれた"></textarea>
+      </div>
+    </div>
+
+    <!-- 縁② -->
+    <div class="en-group">
+      <p class="en-title">縁 その二</p>
+      <p class="en-title-note">ふたつめの出会いについて教えてください。</p>
+
+      <div class="field">
+        <label for="relation2">① 相手との関係</label>
+        <span class="hint">例：恋人 / 親友 / 職場の同僚 / 家族 など</span>
+        <input type="text" id="relation2" placeholder="例：はじめての職場の先輩">
+      </div>
+      <div class="field">
+        <label for="situation2">② 出会ったときの状況</label>
+        <span class="hint">どこで、どんなきっかけで出会いましたか？</span>
+        <textarea id="situation2" placeholder="例：配属初日に、右も左も分からない私の面倒を見てくれた"></textarea>
+      </div>
+      <div class="field">
+        <label for="episode2">③ 印象的だったこと</label>
+        <span class="hint">最初のひと言、忘れられない場面など</span>
+        <textarea id="episode2" placeholder="例：失敗しても「誰でも通る道だよ」と笑ってくれた"></textarea>
+      </div>
+    </div>
+
+    <button class="cta" id="submit">2縁まとめて鑑定してもらう</button>
+    <p class="note">エンタメ目的のAI鑑定です。個人名など特定の情報は入れないでください。</p>
+
+    <section class="result" id="result" aria-live="polite">
+      <h2 id="result-title">鑑定結果</h2>
+      <div class="body" id="result-body"></div>
+      <p class="status" id="result-status"></p>
+    </section>
+  </main>
+
+  <script>
+    /* =========================================================
+       ★ 本番Makeシナリオを作ったら、そのCustom webhookのURLをここに入れる。
+          空（""）のあいだは「デザイン確認モード」で動く（入力を画面に返すだけ）。
+          URLを入れると本POST（text/plain + JSON）に切り替わる。
+       ========================================================= */
+    const WEBHOOK_URL = "";
+
+    /* --- URLから session_id を読み取る --- */
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+
+    const banner = document.getElementById('session-banner');
+    if (sessionId) {
+      banner.className = 'session-banner ok';
+      banner.innerHTML = '<b>決済を確認しました。</b><br>受付番号：' + sessionId;
+    } else {
+      banner.className = 'session-banner ng';
+      banner.innerHTML = '<b>受付番号が見つかりません。</b><br>お手数ですが、決済ページから改めてお進みください。';
+    }
+
+    const btn    = document.getElementById('submit');
+    const result = document.getElementById('result');
+    const rTitle = document.getElementById('result-title');
+    const rBody  = document.getElementById('result-body');
+    const rStat  = document.getElementById('result-status');
+
+    function collect() {
+      return {
+        session_id: sessionId || '',
+        relation1:  document.getElementById('relation1').value.trim(),
+        situation1: document.getElementById('situation1').value.trim(),
+        episode1:   document.getElementById('episode1').value.trim(),
+        relation2:  document.getElementById('relation2').value.trim(),
+        situation2: document.getElementById('situation2').value.trim(),
+        episode2:   document.getElementById('episode2').value.trim()
+      };
+    }
+
+    function anyFilled(d) {
+      return [d.relation1, d.situation1, d.episode1,
+              d.relation2, d.situation2, d.episode2].some(v => v);
+    }
+
+    btn.addEventListener('click', async function () {
+      const data = collect();
+
+      if (!anyFilled(data)) {
+        alert('どれか1つでも入力してから押してみてください。');
+        return;
+      }
+
+      /* --- デザイン確認モード（webhook URL 未設定） --- */
+      if (!WEBHOOK_URL) {
+        rTitle.textContent = '入力を受け取りました（画面テスト）';
+        rBody.textContent =
+          '【縁 その一】\n' +
+          '  関係：' + (data.relation1 || '（未入力）') + '\n' +
+          '  状況：' + (data.situation1 || '（未入力）') + '\n' +
+          '  印象：' + (data.episode1 || '（未入力）') + '\n\n' +
+          '【縁 その二】\n' +
+          '  関係：' + (data.relation2 || '（未入力）') + '\n' +
+          '  状況：' + (data.situation2 || '（未入力）') + '\n' +
+          '  印象：' + (data.episode2 || '（未入力）');
+        rStat.textContent =
+          '※ いまは画面テスト（送信先Make未設定）。' +
+          '受付番号：' + (data.session_id || '（なし）');
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      /* --- 本POST（Make webhook へ text/plain + JSON で送信） --- */
+      btn.disabled = true;
+      btn.textContent = '鑑定中…';
+      rTitle.textContent = '鑑定結果';
+      rBody.textContent = '';
+      rStat.textContent = '';
+      result.classList.remove('show');
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' }, // preflightを避ける（CORS実績のある形）
+          body: JSON.stringify(data)
+        });
+        const text = await res.text();
+
+        rBody.textContent = text;
+        rStat.textContent = 'ステータス：' + res.status;
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {
+        rTitle.textContent = '通信に失敗しました';
+        rBody.textContent = 'お手数ですが、時間をおいて再度お試しください。';
+        rStat.textContent = '詳細：' + e;
+        result.classList.add('show');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '2縁まとめて鑑定してもらう';
+      }
+    });
+  </script>
+</body>
+</html>
