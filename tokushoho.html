@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>特定商取引法に基づく表記 | 縁の鑑定書</title>
+<style>
+  :root {
+    --bg: #f3ede2;
+    --ink: #2a2622;
+    --muted: #8a8073;
+    --line: #ddd3c4;
+    --accent: #e08a2e;
+    --footer-bg: #1c1a26;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 72px 24px 96px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+  .rule {
+    width: 56px;
+    height: 1px;
+    background: var(--ink);
+    margin-bottom: 48px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .row:first-of-type { border-top: 1px solid var(--line); }
+  .label {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding-top: 2px;
+  }
+  .value {
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .value .note {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .value a { color: var(--accent); text-decoration: none; }
+  .value a:hover { text-decoration: underline; }
+
+  footer {
+    background: var(--footer-bg);
+    color: #cfc8c0;
+    text-align: center;
+    padding: 56px 24px;
+  }
+  footer .ftitle {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+    color: var(--accent);
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  footer .fsub { font-size: 13px; color: #9a9189; margin-bottom: 20px; }
+  footer .copy { font-size: 12px; color: #6f675f; }
+
+  @media (max-width: 620px) {
+    .wrap { padding: 48px 18px 72px; }
+    h1 { font-size: 30px; }
+    .row { grid-template-columns: 1fr; gap: 6px; padding: 18px 2px; }
+    .label { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="eyebrow">LEGAL</p>
+    <h1>特定商取引法に基づく表記</h1>
+    <div class="rule"></div>
+
+    <div class="row">
+      <div class="label">販売事業者名</div>
+      <div class="value">人生楽しんだもん価値シリーズ</div>
+    </div>
+
+    <div class="row">
+      <div class="label">所在地</div>
+      <div class="value">請求があり次第、遅滞なく開示いたします。</div>
+    </div>
+
+    <div class="row">
+      <div class="label">電話番号</div>
+      <div class="value">
+        050-6864-0506
+        <span class="note">※ お問い合わせはメールにて承っております。電話での対応はしておりません。</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label">メールアドレス</div>
+      <div class="value"><a href="mailto:kotobanohoken0514@gmail.com">kotobanohoken0514@gmail.com</a></div>
+    </div>
+
+    <div class="row">
+      <div class="label">サービス名</div>
+      <div class="value">
+        縁の鑑定書（Web版）
+        <span class="note">AIによるエンターテインメント目的の鑑定書発行サービスです。</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label">販売価格</div>
+      <div class="value">
+        2縁まとめ鑑定書：1回 150円
+        <span class="note">※ 表示価格は税込みです。</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label">追加手数料</div>
+      <div class="value">販売価格以外の追加費用はありません。</div>
+    </div>
+
+    <div class="row">
+      <div class="label">支払方法</div>
+      <div class="value">クレジットカード（Stripe決済）</div>
+    </div>
+
+    <div class="row">
+      <div class="label">支払時期</div>
+      <div class="value">購入時にお支払いいただきます。</div>
+    </div>
+
+    <div class="row">
+      <div class="label">サービス提供時期</div>
+      <div class="value">決済完了後、即時ご利用いただけます。</div>
+    </div>
+
+    <div class="row">
+      <div class="label">動作環境</div>
+      <div class="value">一般的なWebブラウザ（スマートフォン・パソコン）</div>
+    </div>
+
+    <div class="row">
+      <div class="label">返品・キャンセル</div>
+      <div class="value">
+        ご購入後、万が一ご満足いただけない場合は、直近のご購入1回分（150円）を全額返金いたします。返金をご希望の場合は、メールにてご連絡ください。
+        <span class="note">※ サービスの性質上、発行後の鑑定書の取り消しはできませんが、上記のとおり返金にて対応いたします。</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="ftitle">人生楽しんだもん価値シリーズ</div>
+    <div class="fsub">人生楽しんだもん価値研究所／AI鑑定書</div>
+    <div class="fsub">あなたの人生、だいたい証明します。</div>
+    <div class="copy">© 2026 人生楽しんだもん価値シリーズ. All rights reserved.</div>
+  </footer>
+</body>
+</html>
