@@ -377,6 +377,46 @@
     line-height: 1.7;
   }
 
+  /* ===== 画像保存オーバーレイ（インスタ内ブラウザ・iPhone対応） ===== */
+  .save-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 16, 10, 0.88);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+  }
+  .save-overlay p {
+    color: #fff;
+    font-size: 14.5px;
+    line-height: 1.8;
+    margin: 0 0 14px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .save-overlay p b { color: var(--gold); }
+  .save-overlay img {
+    max-width: 100%;
+    max-height: 68vh;
+    border-radius: 6px;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.5);
+  }
+  .save-overlay .overlay-close {
+    margin-top: 18px;
+    padding: 11px 34px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--sumi);
+    background: #fff;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
   /* ===== シェア用「縁の号外」カード ===== */
   .gogai {
     display: none;
@@ -597,7 +637,7 @@
     <div class="save-controls" id="save-controls">
       <button class="save-btn" id="save-gogai">シェア用画像を保存（号外）</button>
       <button class="save-btn" id="save">全文の証書を保存</button>
-      <p class="save-hint">号外＝称号とスキルの見せ場だけの1枚。証書＝鑑定文の全文入り。<br>面白い結果が出たら、ぜひシェアでお楽しみください。</p>
+      <p class="save-hint">号外＝称号とスキルの見せ場だけの1枚。証書＝鑑定文の全文入り。<br>ボタンを押すと画像が表示されます。長押しで写真に保存できます。</p>
     </div>
 
     <p class="legal-link"><a href="tokushoho.html">特定商取引法に基づく表記</a></p>
@@ -821,6 +861,32 @@
       }
     });
 
+    /* --- 画像保存：オーバーレイ表示方式 ---
+       インスタ内ブラウザ・iPhoneのSafariはaタグのdownloadが使えず
+       「ページを読み込めません」になるため、画像を表示して
+       長押し（PCは右クリック）で保存してもらう方式に統一。 */
+    function showSaveOverlay(dataUrl) {
+      const overlay = document.createElement('div');
+      overlay.className = 'save-overlay';
+
+      const msg = document.createElement('p');
+      msg.innerHTML = '画像を<b>長押し</b>して「<b>"写真"に追加</b>」で保存できます<br>（パソコンは右クリック→名前を付けて画像を保存）';
+      overlay.appendChild(msg);
+
+      const img = document.createElement('img');
+      img.src = dataUrl;
+      img.alt = '縁の鑑定書';
+      overlay.appendChild(img);
+
+      const close = document.createElement('button');
+      close.className = 'overlay-close';
+      close.textContent = '閉じる';
+      close.addEventListener('click', function () { overlay.remove(); });
+      overlay.appendChild(close);
+
+      document.body.appendChild(overlay);
+    }
+
     /* --- シェア用（号外）を画像として保存 --- */
     saveGogaiBtn.addEventListener('click', async function () {
       saveGogaiBtn.disabled = true;
@@ -828,10 +894,7 @@
       saveGogaiBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(gogai, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'en-no-kanteisho-gogai.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        showSaveOverlay(canvas.toDataURL('image/png'));
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
@@ -849,10 +912,7 @@
       saveBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'en-no-kanteisho.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        showSaveOverlay(canvas.toDataURL('image/png'));
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
