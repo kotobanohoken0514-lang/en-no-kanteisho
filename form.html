@@ -390,10 +390,10 @@
     padding: 18px;
   }
   .save-overlay p {
-    color: #fff;
-    font-size: 14.5px;
+    color: rgba(255,255,255,0.85);
+    font-size: 12.5px;
     line-height: 1.8;
-    margin: 0 0 14px;
+    margin: 12px 0 0;
     text-align: center;
     letter-spacing: 0.04em;
   }
@@ -861,22 +861,41 @@
       }
     });
 
-    /* --- 画像保存：オーバーレイ表示方式 ---
-       インスタ内ブラウザ・iPhoneのSafariはaタグのdownloadが使えず
-       「ページを読み込めません」になるため、画像を表示して
-       長押し（PCは右クリック）で保存してもらう方式に統一。 */
+    /* --- 画像保存 ---
+       インスタ内ブラウザ等ではaタグのdownloadが使えないため、
+       ①端末の共有シート（保存・LINE・ストーリーズ等を直接選べる）を優先し、
+       ②使えない環境ではオーバーレイ表示＋長押し保存にフォールバックする。 */
+    async function saveImage(canvas, filename) {
+      try {
+        const blob = await new Promise(function (resolve) {
+          canvas.toBlob(resolve, 'image/png');
+        });
+        if (blob && navigator.canShare && typeof File !== 'undefined') {
+          const file = new File([blob], filename, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file] });
+            return;
+          }
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return; // 共有シートを自分で閉じただけ
+        console.error(e);
+      }
+      showSaveOverlay(canvas.toDataURL('image/png'));
+    }
+
     function showSaveOverlay(dataUrl) {
       const overlay = document.createElement('div');
       overlay.className = 'save-overlay';
-
-      const msg = document.createElement('p');
-      msg.innerHTML = '画像を<b>長押し</b>して「<b>"写真"に追加</b>」で保存できます<br>（パソコンは右クリック→名前を付けて画像を保存）';
-      overlay.appendChild(msg);
 
       const img = document.createElement('img');
       img.src = dataUrl;
       img.alt = '縁の鑑定書';
       overlay.appendChild(img);
+
+      const msg = document.createElement('p');
+      msg.innerHTML = 'この画面を<b>スクショ</b>してシェアしてください（画像の長押し保存もできます）';
+      overlay.appendChild(msg);
 
       const close = document.createElement('button');
       close.className = 'overlay-close';
@@ -894,7 +913,7 @@
       saveGogaiBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(gogai, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        showSaveOverlay(canvas.toDataURL('image/png'));
+        await saveImage(canvas, 'en-no-kanteisho-gogai.png');
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
@@ -912,7 +931,7 @@
       saveBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        showSaveOverlay(canvas.toDataURL('image/png'));
+        await saveImage(canvas, 'en-no-kanteisho.png');
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
