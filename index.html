@@ -25,7 +25,7 @@
     min-height: 100vh;
     font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
     color: var(--sumi);
-    background: #ece7db;
+    background: #211c16;
     display: flex;
     justify-content: center;
     padding: 36px 16px 72px;
@@ -39,7 +39,7 @@
     box-shadow:
       inset 0 0 0 7px var(--washi),
       inset 0 0 0 8px var(--gold),
-      0 8px 30px rgba(60,50,30,0.10);
+      0 18px 50px rgba(0,0,0,0.45);
     padding: 40px 30px 34px;
   }
 
@@ -149,7 +149,7 @@
   textarea { resize: vertical; min-height: 84px; }
 
   input[type="text"]::placeholder,
-  textarea::placeholder { color: #b3a98f; }
+  textarea::placeholder { color: #7a6a44; }
 
   input[type="text"]:focus,
   textarea:focus {
@@ -253,6 +253,18 @@
     border-radius: 10px;
     background: var(--washi-field);
     text-align: center;
+  }
+  .paid-eyebrow {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 13px !important;
+    letter-spacing: 0.1em;
+    color: var(--sumi) !important;
+    margin: 0 0 6px !important;
+  }
+  .paid-note {
+    font-size: 11px !important;
+    color: var(--sumi-faint) !important;
+    margin: 10px 0 0 !important;
   }
   .paid-cta p {
     margin: 0 0 10px;
@@ -431,6 +443,24 @@
     border-radius: 6px;
     box-shadow: 0 6px 28px rgba(0,0,0,0.5);
   }
+  /* 縦長画像（全文証書）用：原寸幅で表示し、スクロールで読む */
+  .save-overlay.tall {
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 96px;
+  }
+  .save-overlay.tall img {
+    width: 100%;
+    max-height: none;
+  }
+  .save-overlay.tall .overlay-close {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+  }
   .save-overlay .overlay-close {
     margin-top: 18px;
     padding: 11px 34px;
@@ -564,46 +594,350 @@
     .gogai-value { font-size: 17px; }
   }
   /* ===== 証書表示ここまで ===== */
+
+  /* ===== ブランドアイコン（判子）＆トップ導線 ===== */
+  .brand-icon {
+    display: block;
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 14px;
+  }
+  .bridge {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--gold-soft);
+    margin: 0 0 18px;
+  }
+  .value-line {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 16px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    color: var(--shu);
+    margin: 22px 0 14px;
+  }
+
+  /* 鑑定例（フォーム前に「何が出るか」を見せる） */
+  .sample {
+    margin: 6px -10px 32px;
+    background: linear-gradient(160deg, #2f2820, #241d16);
+    border-radius: 16px;
+    padding: 24px 16px 26px;
+    box-shadow: inset 0 0 0 1px rgba(201,183,132,0.28);
+  }
+  .sample-tag {
+    text-align: center;
+    margin: 0 0 8px;
+  }
+  .sample-tag::before {
+    content: "鑑定例";
+    display: inline-block;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: #2f2820;
+    background: var(--gold);
+    border-radius: 999px;
+    padding: 5px 18px 5px 20px;
+  }
+  .sample-tag { font-size: 0; }
+  .sample-label {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin: 0 0 16px;
+  }
+  .sample-label span {
+    display: inline-block;
+    border-top: 1px solid rgba(201,183,132,0.55);
+    border-bottom: 1px solid rgba(201,183,132,0.55);
+    padding: 5px 16px;
+  }
+  .sample .gogai-frame {
+    text-align: center;
+    background: var(--washi);
+    border-radius: 5px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+  }
+  .sample-quote {
+    margin: 18px 6px 0;
+    font-size: 13px;
+    line-height: 1.95;
+    color: rgba(247,242,231,0.72);
+    text-align: center;
+  }
+  .sample-quote span {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    color: #f7f2e7;
+  }
+  .sample-caption {
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+  }
+  /* ===== 改善指示対応：訴求・導線・安心感 ===== */
+  html { scroll-behavior: smooth; }
+  a.cta { text-align: center; text-decoration: none; }
+  .main-copy-h1 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 25px;
+    font-weight: 600;
+    color: var(--shu);
+    line-height: 1.7;
+    letter-spacing: 0.08em;
+    margin: 4px 0 18px;
+    padding: 0;
+  }
+  @media (max-width: 600px) { .main-copy-h1 { font-size: 23px; } }
+  .sub-head {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 15px;
+    letter-spacing: 0.16em;
+    color: var(--gold-soft);
+    margin: 0 0 18px;
+  }
+  .genre-note {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+    color: var(--shu);
+    background: #fff6df;
+    border: 1px solid var(--shu);
+    border-radius: 999px;
+    padding: 6px 14px;
+    margin: 0 0 16px;
+  }
+  .cosmos-line {
+    font-size: 12.5px;
+    color: var(--sumi-faint);
+    line-height: 1.9;
+    margin: 16px 0 0;
+  }
+  .cta-block { text-align: center; margin: 24px 0 8px; }
+  .cta-lead {
+    color: var(--shu);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin: 0 0 8px;
+  }
+  .mini-examples { margin: 26px 0 2px; }
+  .mini-title {
+    text-align: center;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    color: var(--gold-soft);
+    margin: 0 0 10px;
+  }
+  .mini-card {
+    background: var(--washi-field);
+    border: 1px solid var(--field-border);
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--sumi);
+    margin-bottom: 8px;
+  }
+  .mini-tag {
+    display: inline-block;
+    color: var(--shu);
+    border: 1px solid var(--shu);
+    border-radius: 999px;
+    font-size: 10.5px;
+    padding: 1px 9px;
+    margin-right: 8px;
+    letter-spacing: 0.1em;
+  }
+  .chips {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--sumi-faint);
+    letter-spacing: 0.06em;
+    margin: 10px 0 0;
+    line-height: 1.9;
+  }
+  .free-offer {
+    margin: 28px 0 20px;
+    text-align: center;
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    background: var(--washi-field);
+    padding: 20px 16px;
+  }
+  .free-main {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--shu);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+    margin: 0 0 10px;
+  }
+  .free-once {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--shu);
+    margin: 0 0 8px;
+  }
+  .free-sub { font-size: 11.5px; color: var(--sumi-faint); line-height: 1.9; margin: 0; }
+  .form-ease { text-align: center; margin: 0 0 24px; }
+  .ease-main { font-size: 13.5px; line-height: 2; color: var(--sumi-dim); margin: 0 0 10px; }
+  .ease-chips { margin: 0; }
+  .ease-privacy {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--sumi-dim);
+    background: #f1ead9;
+    border-radius: 9px;
+    padding: 10px 14px;
+    margin: 14px 0 0;
+    text-align: center;
+  }
+  .ease-chips span {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--gold-soft);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin: 3px;
+  }
+  .included {
+    border: 1px dashed var(--gold);
+    border-radius: 10px;
+    padding: 14px 18px 12px;
+    margin: 6px 0 4px;
+    background: #fbf7ec;
+  }
+  .included-title {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--sumi);
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+  }
+  .included ul { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 2; color: var(--sumi-dim); }
+  .save-btn.sub {
+    background: transparent;
+    color: var(--sumi-dim);
+    border: 1px solid var(--field-border);
+  }
 </style>
 </head>
 <body>
   <main class="sheet">
     <header>
-      <div class="seal">縁之<br>鑑定</div>
+      <img class="brand-icon" src="icon.png" alt="楽研" onerror="this.style.display='none'">
       <p class="eyebrow">縁の鑑定書</p>
-      <h1>その出会いを、鑑定します</h1>
+      <h1 class="main-copy-h1">あなたと「あの人」の関係に、<br>勝手に名前をつけます。</h1>
+      <p class="genre-note">＼ 世界一どうでもいい、でも捨てられない鑑定書です ／</p>
       <p class="lead">
-        この出会いは、宇宙が138億年をかけて準備した必然かもしれません。<br>
-        3つだけ教えてください。あなただけの鑑定書をお届けします。
+        友達、夫婦、親子、仕事仲間。<br>
+        なぜか出会って、なぜか続いているその縁を、<br>
+        AIが少し大げさに、でも妙に納得する言葉にします。
       </p>
-      <p class="recruit-badge">第1期研究員 100名募集 ─ 先着100名様まで無料発行</p>
     </header>
 
+    <!-- 鑑定例：入力前に「何が出てくるか」を見せる（静的サンプル） -->
+    <div class="sample">
+      <p class="sample-tag">鑑定例</p>
+      <p class="sample-label"><span>たまたま隣の席になった、あの人の場合</span></p>
+      <div class="gogai-frame">
+        <div class="gogai-seal">縁之<br>鑑定</div>
+        <p class="gogai-eyebrow">号外</p>
+        <p class="gogai-title">縁の鑑定書</p>
+        <p class="gogai-sub">— 宇宙が認めた、あなたの縁 —</p>
+        <div class="gogai-rule"></div>
+        <span class="gogai-label">獲得した称号</span>
+        <p class="gogai-value">宇宙が計算して、隣の席に配置した人</p>
+        <span class="gogai-label">発動スキル</span>
+        <p class="gogai-value">久しぶりに会っても、昨日の続きから話せる</p>
+        <p class="gogai-energy">この縁に宇宙が費やしたエネルギー<br><b>540兆キロカロリー</b></p>
+      </div>
+      <p class="sample-quote"><span>「この縁は、あなたの毎日に“笑う予定”を追加するために、<br>宇宙が配置したものです。」</span><br>── 鑑定文より</p>
+    </div>
+
+    <div class="mini-examples">
+      <p class="mini-title">どんな関係でも、鑑定できます</p>
+      <div class="mini-card"><span class="mini-tag">夫婦</span>何度けんかしても、夕飯の話で通常運転に戻る人</div>
+      <div class="mini-card"><span class="mini-tag">親子</span>こちらの予定を無視して、勝手に成長していく人</div>
+      <div class="mini-card"><span class="mini-tag">仕事仲間</span>締切前だけ、異常な団結力を発動する人</div>
+      <p class="chips">親友 ／ 恋人 ／ きょうだい ／ 昔の同級生 ／ なぜか縁が切れないあの人</p>
+    </div>
+
+    <div class="cta-block">
+      <p class="cta-lead">先着100名限定・無料（お一人さま1回）</p>
+      <a class="cta scroll-cta" href="#kantei-form">質問に答えてみる</a>
+    </div>
+
+    <div class="free-offer" id="kantei-form">
+      <p class="free-main">先着100名限定<br>「縁の鑑定書」を無料で発行します</p>
+      <p class="free-once">無料鑑定は、お一人さま1回です</p>
+      <p class="free-sub">
+        最初の100名を、勝手に「第1期研究員」と呼んでいます。特別な活動はありません。<br>
+        鑑定後、よろしければ <a href="https://www.instagram.com/tanoshinda_lab/" target="_blank" rel="noopener" style="color:var(--shu);">Instagram（@tanoshinda_lab）</a>のコメントで感想をお聞かせください。SNSへの投稿は必須ではありません。
+      </p>
+    </div>
+
+    <div class="form-ease">
+      <p class="ease-main">
+        うまく書かなくても大丈夫です。<br>
+        思い出せる範囲で、短く教えてください。<br>
+        AIが、その関係らしい言葉に整えます。
+      </p>
+      <p class="ease-chips"><span>3つの質問だけ</span><span>所要時間 約3分</span><span>本名不要</span><span>一言ずつでもOK</span></p>
+      <p class="ease-privacy">本名・住所・電話番号・学校名・勤務先名など、あなたやお相手を特定できる情報は入力しないでください。<br>「夫」「親友」「職場の先輩」など、関係が分かる表現でOKです。</p>
+    </div>
+
     <div class="field">
-      <label for="relation1">① 相手との関係</label>
-      <span class="hint">例：恋人 / 親友 / 職場の同僚 / 家族 など</span>
+      <label for="relation1">① その人は、あなたにとってどんな人ですか？</label>
+      <span class="hint">例：親友、夫、妻、恋人、きょうだい、職場の先輩、昔の同級生 など</span>
       <input type="text" id="relation1" placeholder="例：大学時代からの親友">
     </div>
     <div class="field">
       <label for="situation1">② 出会ったときの状況</label>
-      <span class="hint">どこで、どんなきっかけで出会いましたか？</span>
-      <textarea id="situation1" placeholder="例：新歓のサークル説明会で、たまたま隣の席になった"></textarea>
+      <span class="hint">どこで、どんなきっかけで出会いましたか？（だいたいで大丈夫です）</span>
+      <textarea id="situation1" placeholder="例：大学の新歓説明会で、たまたま隣の席になった"></textarea>
     </div>
     <div class="field">
-      <label for="episode1">③ 印象的だったこと</label>
-      <span class="hint">最初のひと言、忘れられない場面など</span>
-      <textarea id="episode1" placeholder="例：緊張していた私に「一緒に回ろう」と声をかけてくれた"></textarea>
+      <label for="episode1">③ その人との、印象に残っていることを教えてください</label>
+      <span class="hint">最初の印象、忘れられない出来事、2人らしいエピソードなど</span>
+      <textarea id="episode1" placeholder="例：久しぶりに会ったのに、昨日の続きみたいに話が始まった"></textarea>
     </div>
 
-    <button class="cta" id="submit">無料で鑑定してもらう</button>
-    <p class="note">エンタメ目的のAI鑑定です。個人名など特定の情報は入れないでください。</p>
+    <div class="included">
+      <p class="included-title">鑑定書に書かれること</p>
+      <ul>
+        <li>あなたとあの人の「縁の称号」</li>
+        <li>2人だけの「発動スキル」</li>
+        <li>この縁に宇宙が費やしたエネルギー</li>
+        <li>もう少し詳しい鑑定文（全文の証書）</li>
+        <li>シェア用の号外画像（保存できます）</li>
+      </ul>
+    </div>
+
+    <button class="cta" id="submit">私たちの関係に名前をつける</button>
+    <p class="note">
+      入力内容は鑑定結果を生成するためAIサービス（Google の Vertex AI）へ送信され、システムの処理履歴に一定期間残る場合があります。<br>
+      入力内容を、鑑定以外の目的で公開・販売・再利用することはありません。<br>
+      回答後、その場で鑑定結果が表示されます（30秒ほどかかることがあります）。
+    </p>
 
     <p class="experiment-note">
-      これは、AIと世界をおもしろくする公開実験です。<br>
-      面白い鑑定結果が出たら、ぜひスクショで公開してください。<br>
-      あなたの縁が、誰かの笑いと勇気になるかもしれません。<br><br>
-      ※ 個人名や相手が特定できる内容は伏せてお楽しみください。<br>
-      ※ 研究所で紹介する場合は、ご本人の許可をいただいたものだけ使用します。
+      人との関係は、簡単な言葉では説明できません。<br>
+      だからAIに、少し大げさな名前をつけてもらうことにしました。<br><br>
+      笑ったあとに、その人が少し大切に見えたら、<br>
+      この研究は成功です。<br><br>
+      ── AIと世界をおもしろくする公開実験<br>人生楽しんだもん価値研究所
     </p>
 
     <!-- 通常メッセージ用（エラー・発行済み・通信中など） -->
@@ -642,15 +976,18 @@
     <div class="save-controls" id="save-controls">
       <button class="save-btn" id="save-gogai">シェア用画像を保存（号外）</button>
       <button class="save-btn" id="save">全文の証書を保存</button>
+      <button class="save-btn sub" id="copy-url">このページのリンクをコピー</button>
       <p class="save-hint">号外＝称号とスキルの見せ場だけの1枚。証書＝鑑定文の全文入り。<br>ボタンを押すと画像が表示されます。長押しで写真に保存できます。</p>
     </div>
 
     <div class="paid-cta">
-      <p>大切なふたつの縁を、まとめて鑑定するなら</p>
+      <p class="paid-eyebrow">無料鑑定を試した方へ</p>
+      <p>大切な2つの縁を、まとめて残すなら</p>
       <a href="https://buy.stripe.com/6oU00j1x29SZasW35957W08">2縁まとめ鑑定書（150円）はこちら</a>
+      <p class="paid-note">まずは1件、無料でお試しいただけます。</p>
     </div>
 
-    <p class="legal-link"><a href="tokushoho.html">特定商取引法に基づく表記</a></p>
+    <p class="legal-link"><a href="privacy.html">プライバシーポリシー</a> ／ <a href="tokushoho.html">特定商取引法に基づく表記</a></p>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -792,13 +1129,31 @@
       }
 
       const now = new Date();
-      gogaiFooter.innerHTML = '人生楽しんだもん価値研究所<br>発行日　' +
+      gogaiFooter.innerHTML = '#縁の鑑定書<br>人生楽しんだもん価値研究所　Instagram @tanoshinda_lab<br>発行日　' +
         now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
       return true;
     }
 
+    /* --- 無料鑑定はお一人さま1回（ブラウザ記憶によるソフト制限） --- */
+    const FREE_KEY = 'en_kanteisho_free_issued';
+    function freeAlreadyIssued() {
+      try { return localStorage.getItem(FREE_KEY) === '1'; } catch (e) { return false; }
+    }
+    function markFreeIssued() {
+      try { localStorage.setItem(FREE_KEY, '1'); } catch (e) {}
+    }
+
     btn.addEventListener('click', async function () {
       const data = collect();
+
+      if (freeAlreadyIssued()) {
+        rTitle.textContent = '無料鑑定は発行済みです';
+        rBody.textContent = '無料の「縁の鑑定書」は、お一人さま1回とさせていただいています。すでに発行済みのようです。\n\n大切なもうひとつの縁も鑑定したい方は、ページ下部の「2縁まとめ鑑定書（150円）」をご利用ください。';
+        rStat.textContent = '';
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
 
       if (!anyFilled(data)) {
         alert('どれか1つでも入力してから押してみてください。');
@@ -812,7 +1167,7 @@
       gogai.classList.remove('show');
       saveCtrl.classList.remove('show');
       rTitle.textContent = '鑑定中';
-      rBody.textContent = '宇宙と交信しています…（鑑定文の生成に10〜20秒ほどかかります。このままお待ちください）';
+      rBody.textContent = '宇宙が、ふたりの縁を確認しています…（30秒ほどかかることがあります。このままお待ちください）';
       rStat.textContent = '';
       result.classList.add('show');
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -828,6 +1183,7 @@
         /* 成功判定：200かつ鑑定文らしい長さなら証書で表示。
            それ以外（発行済み・決済未確認などの短い案内文）は通常表示。 */
         if (res.status === 200 && text.length > 150) {
+          markFreeIssued();
           result.classList.remove('show');
           renderCertificate(text);
           cert.classList.add('show');
@@ -845,12 +1201,12 @@
         }
       } catch (e) {
         rTitle.textContent = '通信に失敗しました';
-        rBody.textContent = 'お手数ですが、時間をおいて再度お試しください。';
+        rBody.textContent = 'うまく鑑定できませんでした。内容を変えずに、もう一度お試しください。';
         rStat.textContent = '詳細：' + e;
         result.classList.add('show');
       } finally {
         btn.disabled = false;
-        btn.textContent = '無料で鑑定してもらう';
+        btn.textContent = '私たちの関係に名前をつける';
       }
     });
 
@@ -858,7 +1214,7 @@
        インスタ内ブラウザ等ではaタグのdownloadが使えないため、
        ①端末の共有シート（保存・LINE・ストーリーズ等を直接選べる）を優先し、
        ②使えない環境ではオーバーレイ表示＋長押し保存にフォールバックする。 */
-    async function saveImage(canvas, filename) {
+    async function saveImage(canvas, filename, tall) {
       try {
         const blob = await new Promise(function (resolve) {
           canvas.toBlob(resolve, 'image/png');
@@ -874,21 +1230,29 @@
         if (e && e.name === 'AbortError') return; // 共有シートを自分で閉じただけ
         console.error(e);
       }
-      showSaveOverlay(canvas.toDataURL('image/png'));
+      showSaveOverlay(canvas.toDataURL('image/png'), tall);
     }
 
-    function showSaveOverlay(dataUrl) {
+    function showSaveOverlay(dataUrl, tall) {
       const overlay = document.createElement('div');
-      overlay.className = 'save-overlay';
+      overlay.className = tall ? 'save-overlay tall' : 'save-overlay';
+
+      const msg = document.createElement('p');
+      if (tall) {
+        msg.innerHTML = '下にスクロールして全文をご覧ください。<br>スマホの<b>スクロールキャプチャ（長いスクショ）</b>で全文を1枚で保存できます';
+        msg.style.margin = '0 0 12px';
+        overlay.appendChild(msg);
+      }
 
       const img = document.createElement('img');
       img.src = dataUrl;
       img.alt = '縁の鑑定書';
       overlay.appendChild(img);
 
-      const msg = document.createElement('p');
-      msg.innerHTML = 'この画面を<b>スクショ</b>してシェアしてください（画像の長押し保存もできます）';
-      overlay.appendChild(msg);
+      if (!tall) {
+        msg.innerHTML = 'この画面を<b>スクショ</b>してシェアしてください（画像の長押し保存もできます）';
+        overlay.appendChild(msg);
+      }
 
       const close = document.createElement('button');
       close.className = 'overlay-close';
@@ -898,6 +1262,19 @@
 
       document.body.appendChild(overlay);
     }
+
+    /* --- ページURLのコピー --- */
+    const copyBtn = document.getElementById('copy-url');
+    copyBtn.addEventListener('click', async function () {
+      const url = 'https://kotobanohoken0514-lang.github.io/en-no-kanteisho/';
+      try {
+        await navigator.clipboard.writeText(url);
+        copyBtn.textContent = 'コピーしました！';
+      } catch (e) {
+        window.prompt('このURLをコピーしてください', url);
+      }
+      setTimeout(function () { copyBtn.textContent = 'このページのリンクをコピー'; }, 2000);
+    });
 
     /* --- シェア用（号外）を画像として保存 --- */
     saveGogaiBtn.addEventListener('click', async function () {
@@ -924,7 +1301,7 @@
       saveBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        await saveImage(canvas, 'en-no-kanteisho.png');
+        await saveImage(canvas, 'en-no-kanteisho.png', true);
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
