@@ -404,6 +404,24 @@
     border-radius: 6px;
     box-shadow: 0 6px 28px rgba(0,0,0,0.5);
   }
+  /* 縦長画像（全文証書）用：原寸幅で表示し、スクロールで読む */
+  .save-overlay.tall {
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 96px;
+  }
+  .save-overlay.tall img {
+    width: 100%;
+    max-height: none;
+  }
+  .save-overlay.tall .overlay-close {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+  }
   .save-overlay .overlay-close {
     margin-top: 18px;
     padding: 11px 34px;
@@ -794,7 +812,7 @@
       }
 
       const now = new Date();
-      gogaiFooter.innerHTML = '人生楽しんだもん価値研究所<br>発行日　' +
+      gogaiFooter.innerHTML = '人生楽しんだもん価値研究所　Instagram @tanoshinda_lab<br>発行日　' +
         now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
       return true;
     }
@@ -865,7 +883,7 @@
        インスタ内ブラウザ等ではaタグのdownloadが使えないため、
        ①端末の共有シート（保存・LINE・ストーリーズ等を直接選べる）を優先し、
        ②使えない環境ではオーバーレイ表示＋長押し保存にフォールバックする。 */
-    async function saveImage(canvas, filename) {
+    async function saveImage(canvas, filename, tall) {
       try {
         const blob = await new Promise(function (resolve) {
           canvas.toBlob(resolve, 'image/png');
@@ -881,21 +899,29 @@
         if (e && e.name === 'AbortError') return; // 共有シートを自分で閉じただけ
         console.error(e);
       }
-      showSaveOverlay(canvas.toDataURL('image/png'));
+      showSaveOverlay(canvas.toDataURL('image/png'), tall);
     }
 
-    function showSaveOverlay(dataUrl) {
+    function showSaveOverlay(dataUrl, tall) {
       const overlay = document.createElement('div');
-      overlay.className = 'save-overlay';
+      overlay.className = tall ? 'save-overlay tall' : 'save-overlay';
+
+      const msg = document.createElement('p');
+      if (tall) {
+        msg.innerHTML = '下にスクロールして全文をご覧ください。<br>スマホの<b>スクロールキャプチャ（長いスクショ）</b>で全文を1枚で保存できます';
+        msg.style.margin = '0 0 12px';
+        overlay.appendChild(msg);
+      }
 
       const img = document.createElement('img');
       img.src = dataUrl;
       img.alt = '縁の鑑定書';
       overlay.appendChild(img);
 
-      const msg = document.createElement('p');
-      msg.innerHTML = 'この画面を<b>スクショ</b>してシェアしてください（画像の長押し保存もできます）';
-      overlay.appendChild(msg);
+      if (!tall) {
+        msg.innerHTML = 'この画面を<b>スクショ</b>してシェアしてください（画像の長押し保存もできます）';
+        overlay.appendChild(msg);
+      }
 
       const close = document.createElement('button');
       close.className = 'overlay-close';
@@ -931,7 +957,7 @@
       saveBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        await saveImage(canvas, 'en-no-kanteisho.png');
+        await saveImage(canvas, 'en-no-kanteisho.png', true);
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
