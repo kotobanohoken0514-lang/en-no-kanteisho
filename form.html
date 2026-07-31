@@ -691,6 +691,32 @@
     const certDate = document.getElementById('cert-date');
     const saveCtrl = document.getElementById('save-controls');
 
+    /* --- 待ち時間の文言ローテーション ---
+       15秒ごとに切り替え、最後の文言で停止する（ループしない）。 */
+    const WAIT_MESSAGES = [
+      '宇宙の記録を照会しています…',
+      '138億年分の伏線をさかのぼっています…',
+      'ふたつの縁を特定しました…',
+      '鑑定書を清書しています…'
+    ];
+    let waitTimer = null;
+
+    function startWaitMessages() {
+      stopWaitMessages();
+      let i = 0;
+      rBody.textContent = WAIT_MESSAGES[0];
+      rStat.textContent = '（1分ほどかかります。画面を閉じたり、更新したりせずにお待ちください）';
+      waitTimer = setInterval(function () {
+        i++;
+        if (i >= WAIT_MESSAGES.length) { stopWaitMessages(); return; }
+        rBody.textContent = WAIT_MESSAGES[i];
+      }, 15000);
+    }
+
+    function stopWaitMessages() {
+      if (waitTimer) { clearInterval(waitTimer); waitTimer = null; }
+    }
+
     function collect() {
       return {
         session_id: sessionId || '',
@@ -837,8 +863,7 @@
       gogai.classList.remove('show');
       saveCtrl.classList.remove('show');
       rTitle.textContent = '鑑定中';
-      rBody.textContent = '宇宙と交信しています…（鑑定文の生成に10〜20秒ほどかかります。このままお待ちください）';
-      rStat.textContent = '';
+      startWaitMessages();
       result.classList.add('show');
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -874,6 +899,7 @@
         rStat.textContent = '詳細：' + e;
         result.classList.add('show');
       } finally {
+        stopWaitMessages();
         btn.disabled = false;
         btn.textContent = '2縁まとめて鑑定してもらう';
       }
