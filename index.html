@@ -929,7 +929,7 @@
     <p class="note">
       入力内容は鑑定結果を生成するためAIサービス（Google の Vertex AI）へ送信され、システムの処理履歴に一定期間残る場合があります。<br>
       入力内容を、鑑定以外の目的で公開・販売・再利用することはありません。<br>
-      回答後、その場で鑑定結果が表示されます（30秒ほどかかることがあります）。
+      回答後、その場で鑑定結果が表示されます（1分ほどかかることがあります）。
     </p>
 
     <p class="experiment-note">
@@ -1006,6 +1006,32 @@
     const certBody = document.getElementById('cert-body');
     const certDate = document.getElementById('cert-date');
     const saveCtrl = document.getElementById('save-controls');
+
+    /* --- 待ち時間の文言ローテーション ---
+       15秒ごとに切り替え、最後の文言で停止する（ループしない）。 */
+    const WAIT_MESSAGES = [
+      '宇宙の記録を照会しています…',
+      '138億年分の伏線をさかのぼっています…',
+      '該当する縁を特定しました…',
+      '鑑定書を清書しています…'
+    ];
+    let waitTimer = null;
+
+    function startWaitMessages() {
+      stopWaitMessages();
+      let i = 0;
+      rBody.textContent = WAIT_MESSAGES[0];
+      rStat.textContent = '（1分ほどかかります。このままお待ちください）';
+      waitTimer = setInterval(function () {
+        i++;
+        if (i >= WAIT_MESSAGES.length) { stopWaitMessages(); return; }
+        rBody.textContent = WAIT_MESSAGES[i];
+      }, 15000);
+    }
+
+    function stopWaitMessages() {
+      if (waitTimer) { clearInterval(waitTimer); waitTimer = null; }
+    }
 
     function collect() {
       return {
@@ -1167,8 +1193,7 @@
       gogai.classList.remove('show');
       saveCtrl.classList.remove('show');
       rTitle.textContent = '鑑定中';
-      rBody.textContent = '宇宙が、ふたりの縁を確認しています…（30秒ほどかかることがあります。このままお待ちください）';
-      rStat.textContent = '';
+      startWaitMessages();
       result.classList.add('show');
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -1205,6 +1230,7 @@
         rStat.textContent = '詳細：' + e;
         result.classList.add('show');
       } finally {
+        stopWaitMessages();
         btn.disabled = false;
         btn.textContent = '私たちの関係に名前をつける';
       }
