@@ -25,10 +25,20 @@
     min-height: 100vh;
     font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
     color: var(--sumi);
-    background: #ece7db;
+    background: #211c16;
     display: flex;
     justify-content: center;
     padding: 36px 16px 72px;
+    /* 日本語の折り返しを自然にする（スマホでの改行位置対策） */
+    word-break: auto-phrase;
+    line-break: strict;
+    text-wrap: pretty;
+  }
+  h1, h2, h3,
+  .cta, .field label, .field .hint, .q-num,
+  .kantei-head-main, .kantei-head-sub, .kantei-head-badge,
+  .ease-main, .legal-link, .en-title, .en-title-note {
+    text-wrap: balance;
   }
 
   .sheet {
@@ -39,34 +49,21 @@
     box-shadow:
       inset 0 0 0 7px var(--washi),
       inset 0 0 0 8px var(--gold),
-      0 8px 30px rgba(60,50,30,0.10);
+      0 18px 50px rgba(0,0,0,0.45);
     padding: 40px 30px 34px;
   }
 
   header {
     position: relative;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 26px;
   }
 
-  .seal {
-    position: absolute;
-    top: -8px;
-    right: 0;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    border: 2px solid var(--shu);
-    color: var(--shu);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 14px;
-    line-height: 1.25;
-    letter-spacing: 0.04em;
-    text-align: center;
-    transform: rotate(-8deg);
+  .brand-icon {
+    display: block;
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 14px;
   }
 
   .eyebrow {
@@ -77,15 +74,16 @@
     padding-left: 0.32em;
   }
 
-  h1 {
-    font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", serif;
+  .main-copy-h1 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 25px;
     font-weight: 600;
-    font-size: 30px;
-    letter-spacing: 0.12em;
-    margin: 0 0 16px;
-    padding-left: 0.12em;
-    color: var(--sumi);
+    color: var(--shu);
+    line-height: 1.7;
+    letter-spacing: 0.08em;
+    margin: 4px 0 16px;
   }
+  @media (max-width: 600px) { .main-copy-h1 { font-size: 23px; } }
 
   .lead {
     font-size: 14px;
@@ -96,7 +94,7 @@
 
   /* テスト環境である旨の帯 */
   .testmode-bar {
-    margin: 0 0 18px;
+    margin: 0 0 20px;
     padding: 9px 14px;
     border-radius: 8px;
     background: #fdf6e3;
@@ -108,9 +106,9 @@
     text-align: center;
   }
 
-  /* session_id 自己診断バナー（決済を通ってきたかを目で確認する用） */
+  /* session_id 自己診断バナー */
   .session-banner {
-    margin: 22px 0 4px;
+    margin: 0 0 4px;
     padding: 10px 14px;
     border-radius: 9px;
     font-size: 12.5px;
@@ -131,26 +129,116 @@
   }
   .session-banner b { letter-spacing: 0.04em; }
 
-  /* 縁①・縁② の見出し */
-  .en-group { margin-top: 30px; }
-  .en-title {
+  /* 入力の心構え */
+  .form-ease { text-align: center; margin: 26px 0 4px; }
+  .ease-main {
+    font-size: 13.5px;
+    line-height: 2;
+    color: var(--sumi-dim);
+    margin: 0 0 10px;
+  }
+  .ease-chips { margin: 0; }
+  .ease-chips span {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--gold-soft);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin: 3px;
+  }
+  .ease-privacy {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--sumi-dim);
+    background: #f1ead9;
+    border-radius: 9px;
+    padding: 10px 14px;
+    margin: 14px 0 0;
+    text-align: center;
+  }
+
+  /* 入力エリア */
+  .kantei-box {
+    margin: 22px 0 10px;
+    padding: 18px 13px 20px;
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.5);
+  }
+  .kantei-head { text-align: center; margin: 0 0 18px; }
+  .kantei-head-badge {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background: var(--shu);
+    border-radius: 999px;
+    padding: 3px 14px;
+    margin: 0 0 9px;
+  }
+  .kantei-head-main {
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
     font-size: 17px;
-    letter-spacing: 0.1em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     color: var(--shu);
-    margin: 0 0 4px;
+    margin: 0 0 6px;
+  }
+  .kantei-head-sub {
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    color: var(--sumi-dim);
+    margin: 0;
+  }
+
+  .en-group { margin-top: 4px; }
+  .en-title {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 16px;
+    letter-spacing: 0.14em;
+    color: var(--shu);
+    margin: 22px 0 4px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--gold);
+    text-align: center;
   }
   .en-title-note {
     font-size: 12px;
     color: var(--sumi-faint);
-    margin: 0 0 18px;
+    margin: 0 0 14px;
     line-height: 1.7;
+    text-align: center;
   }
 
-  .field { margin-bottom: 22px; }
+  .q-card {
+    background: var(--washi-field);
+    border: 1px solid var(--field-border);
+    border-radius: 12px;
+    padding: 15px 13px;
+    margin-bottom: 14px;
+  }
+  .q-num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--shu);
+    border: 1px solid var(--shu);
+    border-radius: 999px;
+    padding: 2px 10px;
+    margin-bottom: 11px;
+  }
+  .q-card .field { margin-bottom: 0; }
+  .q-card input[type="text"],
+  .q-card textarea {
+    background: #fff;
+    border: 1.5px solid #bda978;
+  }
+  .q-card textarea { min-height: 104px; }
 
+  .field { margin-bottom: 22px; }
   .field label {
     display: block;
     font-size: 15px;
@@ -159,7 +247,6 @@
     letter-spacing: 0.04em;
     color: var(--sumi);
   }
-
   .field .hint {
     display: block;
     font-size: 12.5px;
@@ -181,12 +268,9 @@
     line-height: 1.7;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
   }
-
   textarea { resize: vertical; min-height: 84px; }
-
   input[type="text"]::placeholder,
-  textarea::placeholder { color: #b3a98f; }
-
+  textarea::placeholder { color: #7a6a44; }
   input[type="text"]:focus,
   textarea:focus {
     outline: none;
@@ -197,7 +281,7 @@
   .cta {
     display: block;
     width: 100%;
-    margin-top: 14px;
+    margin-top: 10px;
     padding: 16px;
     font-size: 16px;
     font-weight: 700;
@@ -221,6 +305,14 @@
     color: var(--sumi-faint);
     text-align: center;
   }
+
+  .legal-link {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+  }
+  .legal-link a { color: var(--sumi-faint); text-decoration: underline; }
 
   .result {
     display: none;
@@ -248,10 +340,9 @@
   }
   @media (max-width: 600px) {
     .sheet { padding: 34px 22px 28px; }
-    h1 { font-size: 27px; }
   }
 
-  /* ===== 証書表示（鑑定結果の映え化）ここから ===== */
+  /* ===== 証書表示 ===== */
   .certificate {
     display: none;
     margin-top: 28px;
@@ -406,6 +497,63 @@
     line-height: 1.7;
   }
 
+  /* ===== 画像保存オーバーレイ（インスタ内ブラウザ・iPhone対応） ===== */
+  .save-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 16, 10, 0.88);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+  }
+  .save-overlay p {
+    color: rgba(255,255,255,0.85);
+    font-size: 12.5px;
+    line-height: 1.8;
+    margin: 12px 0 0;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .save-overlay p b { color: var(--gold); }
+  .save-overlay img {
+    max-width: 100%;
+    max-height: 68vh;
+    border-radius: 6px;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.5);
+  }
+  .save-overlay.tall {
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 96px;
+  }
+  .save-overlay.tall img {
+    width: 100%;
+    max-height: none;
+  }
+  .save-overlay.tall .overlay-close {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+  }
+  .save-overlay .overlay-close {
+    margin-top: 18px;
+    padding: 11px 34px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--sumi);
+    background: #fff;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
   /* ===== シェア用「縁の号外」カード ===== */
   .gogai {
     display: none;
@@ -526,7 +674,6 @@
     .gogai-value { font-size: 17px; }
     .cert-kv-key { flex-basis: 4em; font-size: 12px; }
   }
-  /* ===== 証書表示ここまで ===== */
 </style>
 </head>
 <body>
@@ -536,64 +683,110 @@
     </div>
 
     <header>
-      <div class="seal">縁之<br>鑑定</div>
+      <img class="brand-icon" src="icon.png" alt="楽研" onerror="this.style.display='none'">
       <p class="eyebrow">2縁まとめ鑑定書</p>
-      <h1>ふたつの出会いを、鑑定します</h1>
+      <h1 class="main-copy-h1">ふたつの縁に、<br>まとめて名前をつけます。</h1>
       <p class="lead">
-        その出会いは、宇宙が138億年をかけて準備した必然かもしれません。<br>
-        大切なふたつの縁について、それぞれ教えてください。
+        それぞれの縁を鑑定したあと、<br>
+        2つを見比べて「あなたの縁のクセ」と、<br>
+        そこから生まれた「縁獣」をお渡しします。
       </p>
     </header>
 
     <!-- session_id 自己診断バナー：JSで内容を差し替える -->
     <div class="session-banner ng" id="session-banner">確認中…</div>
 
-    <!-- 縁① -->
-    <div class="en-group">
-      <p class="en-title">縁 その一</p>
-      <p class="en-title-note">ひとつめの出会いについて教えてください。</p>
-
-      <div class="field">
-        <label for="relation1">① 相手との関係</label>
-        <span class="hint">例：恋人 / 親友 / 職場の同僚 / 家族 など</span>
-        <input type="text" id="relation1" placeholder="例：大学時代からの親友">
-      </div>
-      <div class="field">
-        <label for="situation1">② 出会ったときの状況</label>
-        <span class="hint">どこで、どんなきっかけで出会いましたか？</span>
-        <textarea id="situation1" placeholder="例：新歓のサークル説明会で、たまたま隣の席になった"></textarea>
-      </div>
-      <div class="field">
-        <label for="episode1">③ 印象的だったこと</label>
-        <span class="hint">最初のひと言、忘れられない場面など</span>
-        <textarea id="episode1" placeholder="例：緊張していた私に「一緒に回ろう」と声をかけてくれた"></textarea>
-      </div>
+    <div class="form-ease">
+      <p class="ease-main">
+        うまく書かなくても大丈夫です。<br>
+        思い出せる範囲で、短く教えてください。<br>
+        AIが、その関係らしい言葉に整えます。
+      </p>
+      <p class="ease-chips"><span>3つの質問×2人分</span><span>所要時間 約5分</span><span>本名不要</span><span>一言ずつでもOK</span></p>
+      <p class="ease-privacy">本名・住所・電話番号・学校名・勤務先名など、あなたやお相手を特定できる情報は入力しないでください。<br>「夫」「親友」「職場の先輩」など、関係が分かる表現でOKです。</p>
     </div>
 
-    <!-- 縁② -->
-    <div class="en-group">
-      <p class="en-title">縁 その二</p>
-      <p class="en-title-note">ふたつめの出会いについて教えてください。</p>
+    <div class="kantei-box" id="kantei-form">
+      <div class="kantei-head">
+        <p class="kantei-head-badge">2縁まとめ鑑定書</p>
+        <p class="kantei-head-main">ここから鑑定スタート</p>
+        <p class="kantei-head-sub">ふたりぶん、3つずつ答えてください</p>
+      </div>
 
-      <div class="field">
-        <label for="relation2">① 相手との関係</label>
-        <span class="hint">例：恋人 / 親友 / 職場の同僚 / 家族 など</span>
-        <input type="text" id="relation2" placeholder="例：はじめての職場の先輩">
+      <!-- 縁 その一 -->
+      <div class="en-group">
+        <p class="en-title">縁 その一</p>
+        <p class="en-title-note">ひとりめの相手について教えてください</p>
+
+        <div class="q-card">
+          <span class="q-num">質問 1 / 3</span>
+          <div class="field">
+            <label for="relation1">その人は、あなたにとってどんな人ですか？</label>
+            <span class="hint">例：親友、夫、妻、恋人、きょうだい、職場の先輩、昔の同級生 など</span>
+            <input type="text" id="relation1" placeholder="例：大学時代からの親友">
+          </div>
+        </div>
+
+        <div class="q-card">
+          <span class="q-num">質問 2 / 3</span>
+          <div class="field">
+            <label for="situation1">どこで、どんなきっかけで出会いましたか？</label>
+            <span class="hint">だいたいで大丈夫です</span>
+            <textarea id="situation1" placeholder="例：大学の新歓説明会で、たまたま隣の席になった"></textarea>
+          </div>
+        </div>
+
+        <div class="q-card">
+          <span class="q-num">質問 3 / 3</span>
+          <div class="field">
+            <label for="episode1">その人との、印象に残っていることを教えてください</label>
+            <span class="hint">最初の印象、忘れられない出来事、2人らしいエピソードなど</span>
+            <textarea id="episode1" placeholder="例：久しぶりに会ったのに、昨日の続きみたいに話が始まった"></textarea>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <label for="situation2">② 出会ったときの状況</label>
-        <span class="hint">どこで、どんなきっかけで出会いましたか？</span>
-        <textarea id="situation2" placeholder="例：配属初日に、右も左も分からない私の面倒を見てくれた"></textarea>
+
+      <!-- 縁 その二 -->
+      <div class="en-group">
+        <p class="en-title">縁 その二</p>
+        <p class="en-title-note">ふたりめの相手について教えてください</p>
+
+        <div class="q-card">
+          <span class="q-num">質問 1 / 3</span>
+          <div class="field">
+            <label for="relation2">その人は、あなたにとってどんな人ですか？</label>
+            <span class="hint">例：親友、夫、妻、恋人、きょうだい、職場の先輩、昔の同級生 など</span>
+            <input type="text" id="relation2" placeholder="例：はじめての職場の先輩">
+          </div>
+        </div>
+
+        <div class="q-card">
+          <span class="q-num">質問 2 / 3</span>
+          <div class="field">
+            <label for="situation2">どこで、どんなきっかけで出会いましたか？</label>
+            <span class="hint">だいたいで大丈夫です</span>
+            <textarea id="situation2" placeholder="例：配属初日に、右も左も分からない私の面倒を見てくれた"></textarea>
+          </div>
+        </div>
+
+        <div class="q-card">
+          <span class="q-num">質問 3 / 3</span>
+          <div class="field">
+            <label for="episode2">その人との、印象に残っていることを教えてください</label>
+            <span class="hint">最初の印象、忘れられない出来事、2人らしいエピソードなど</span>
+            <textarea id="episode2" placeholder="例：失敗しても「誰でも通る道だよ」と笑ってくれた"></textarea>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <label for="episode2">③ 印象的だったこと</label>
-        <span class="hint">最初のひと言、忘れられない場面など</span>
-        <textarea id="episode2" placeholder="例：失敗しても「誰でも通る道だよ」と笑ってくれた"></textarea>
-      </div>
+
+      <button class="cta" id="submit">2縁まとめて鑑定してもらう</button>
     </div>
 
-    <button class="cta" id="submit">2縁まとめて鑑定してもらう</button>
-    <p class="note">エンタメ目的のAI鑑定です。個人名など特定の情報は入れないでください。</p>
+    <p class="note">
+      入力内容は鑑定結果を生成するためAIサービス（Google の Vertex AI）へ送信され、システムの処理履歴に一定期間残る場合があります。<br>
+      入力内容を、鑑定以外の目的で公開・販売・再利用することはありません。<br>
+      送信後、その場で鑑定結果が表示されます（1分ほどかかることがあります）。
+    </p>
 
     <!-- 通常メッセージ用（エラー・発行済み・通信中など） -->
     <section class="result" id="result" aria-live="polite">
@@ -631,8 +824,10 @@
     <div class="save-controls" id="save-controls">
       <button class="save-btn" id="save-gogai">シェア用画像を保存（号外）</button>
       <button class="save-btn" id="save">全文の証書を保存</button>
-      <p class="save-hint">号外＝称号とスキルの見せ場だけの1枚。証書＝鑑定文の全文入り。<br>面白い結果が出たら、ぜひシェアでお楽しみください。</p>
+      <p class="save-hint">号外＝称号とスキルの見せ場だけの1枚。証書＝鑑定文の全文入り。<br>ボタンを押すと画像が表示されます。長押しで写真に保存できます。</p>
     </div>
+
+    <p class="legal-link"><a href="privacy.html">プライバシーポリシー</a> ／ <a href="tokushoho.html">特定商取引法に基づく表記</a></p>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -670,6 +865,32 @@
     /* 縁獣の項目名（行頭がこれなら項目立てで表示する） */
     const KEMONO_KEYS = /^(縁獣名|生息地|特技|弱点|姿)：/;
 
+    /* --- 待ち時間の文言ローテーション ---
+       15秒ごとに切り替え、最後の文言で停止する（ループしない）。 */
+    const WAIT_MESSAGES = [
+      '宇宙の記録を照会しています…',
+      '138億年分の伏線をさかのぼっています…',
+      'ふたつの縁の共通点を探しています…',
+      '鑑定書を清書しています…'
+    ];
+    let waitTimer = null;
+
+    function startWaitMessages() {
+      stopWaitMessages();
+      let i = 0;
+      rBody.textContent = WAIT_MESSAGES[0];
+      rStat.textContent = '（1分ほどかかります。画面を閉じずにお待ちください）';
+      waitTimer = setInterval(function () {
+        i++;
+        if (i >= WAIT_MESSAGES.length) { stopWaitMessages(); return; }
+        rBody.textContent = WAIT_MESSAGES[i];
+      }, 15000);
+    }
+
+    function stopWaitMessages() {
+      if (waitTimer) { clearInterval(waitTimer); waitTimer = null; }
+    }
+
     function collect() {
       return {
         session_id: sessionId || '',
@@ -682,9 +903,15 @@
       };
     }
 
-    function anyFilled(d) {
-      return [d.relation1, d.situation1, d.episode1,
-              d.relation2, d.situation2, d.episode2].some(v => v);
+    /* 縁ごとに最低1項目は必須。
+       空のままだとAIが代名詞だらけの穴埋め鑑定文を作ってしまうため。 */
+    function validate(d) {
+      const en1 = [d.relation1, d.situation1, d.episode1].some(v => v);
+      const en2 = [d.relation2, d.situation2, d.episode2].some(v => v);
+      if (!en1 && !en2) return '「縁 その一」「縁 その二」それぞれ、1つ以上入力してください。';
+      if (!en1) return '「縁 その一」が空のままです。1つ以上入力してください。';
+      if (!en2) return '「縁 その二」が空のままです。1つ以上入力してください。';
+      return null;
     }
 
     /* --- 鑑定文を証書レイアウトに流し込む ---
@@ -806,7 +1033,7 @@
       }
 
       const now = new Date();
-      gogaiFooter.innerHTML = '人生楽しんだもん価値研究所<br>発行日　' +
+      gogaiFooter.innerHTML = '#縁の鑑定書<br>人生楽しんだもん価値研究所　Instagram @tanoshinda_lab<br>発行日　' +
         now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
       return true;
     }
@@ -814,10 +1041,8 @@
     btn.addEventListener('click', async function () {
       const data = collect();
 
-      if (!anyFilled(data)) {
-        alert('どれか1つでも入力してから押してみてください。');
-        return;
-      }
+      const err = validate(data);
+      if (err) { alert(err); return; }
 
       /* --- 送信開始：待ち時間の案内を出す --- */
       btn.disabled = true;
@@ -826,8 +1051,7 @@
       gogai.classList.remove('show');
       saveCtrl.classList.remove('show');
       rTitle.textContent = '鑑定中';
-      rBody.textContent = '宇宙と交信しています…（鑑定文の生成に1分ほどかかることがあります。画面を閉じずにこのままお待ちください）';
-      rStat.textContent = '';
+      startWaitMessages();
       result.classList.add('show');
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -859,14 +1083,68 @@
         }
       } catch (e) {
         rTitle.textContent = '通信に失敗しました';
-        rBody.textContent = 'お手数ですが、時間をおいて再度お試しください。';
+        rBody.textContent = 'うまく鑑定できませんでした。内容を変えずに、もう一度お試しください。';
         rStat.textContent = '詳細：' + e;
         result.classList.add('show');
       } finally {
+        stopWaitMessages();
         btn.disabled = false;
         btn.textContent = '2縁まとめて鑑定してもらう';
       }
     });
+
+    /* --- 画像保存 ---
+       インスタ内ブラウザ等ではaタグのdownloadが使えないため、
+       ①端末の共有シート（保存・LINE・ストーリーズ等を直接選べる）を優先し、
+       ②使えない環境ではオーバーレイ表示＋長押し保存にフォールバックする。 */
+    async function saveImage(canvas, filename, tall) {
+      try {
+        const blob = await new Promise(function (resolve) {
+          canvas.toBlob(resolve, 'image/png');
+        });
+        if (blob && navigator.canShare && typeof File !== 'undefined') {
+          const file = new File([blob], filename, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file] });
+            return;
+          }
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return; // 共有シートを自分で閉じただけ
+        console.error(e);
+      }
+      showSaveOverlay(canvas.toDataURL('image/png'), tall);
+    }
+
+    function showSaveOverlay(dataUrl, tall) {
+      const overlay = document.createElement('div');
+      overlay.className = tall ? 'save-overlay tall' : 'save-overlay';
+
+      const msg = document.createElement('p');
+      if (tall) {
+        msg.innerHTML = '下にスクロールして全文をご覧ください。<br>スマホの<b>スクロールキャプチャ（長いスクショ）</b>で全文を1枚で保存できます';
+        msg.style.margin = '0 0 12px';
+        overlay.appendChild(msg);
+      }
+
+      const img = document.createElement('img');
+      img.src = dataUrl;
+      img.alt = '縁の鑑定書';
+      overlay.appendChild(img);
+
+      if (!tall) {
+        msg.innerHTML = 'この画面を<b>スクショ</b>してシェアしてください（画像の長押し保存もできます）';
+        overlay.appendChild(msg);
+      }
+
+      const close = document.createElement('button');
+      close.className = 'overlay-close';
+      close.textContent = '閉じる';
+      close.addEventListener('click', function () { overlay.remove(); });
+      overlay.appendChild(close);
+
+      document.body.appendChild(overlay);
+    }
 
     /* --- シェア用（号外）を画像として保存 --- */
     saveGogaiBtn.addEventListener('click', async function () {
@@ -875,10 +1153,7 @@
       saveGogaiBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(gogai, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'en-no-kanteisho-gogai.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        await saveImage(canvas, 'en-no-kanteisho-gogai.png');
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
@@ -896,10 +1171,7 @@
       saveBtn.textContent = '画像を作成中…';
       try {
         const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#f7f2e7', useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'en-no-kanteisho.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        await saveImage(canvas, 'en-no-kanteisho.png', true);
       } catch (e) {
         alert('画像の作成に失敗しました。ネットにつながっているか確認して、もう一度お試しください。');
         console.error(e);
