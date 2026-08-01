@@ -834,8 +834,9 @@
   <script>
     /* =========================================================
        ★ テスト用：クローンシナリオ「WEB縁_有料_時間計測」のCustom webhook。
-         本番へ反映するときは、本番の有料webhookに必ず戻すこと。
-         本番URL： https://hook.eu1.make.com/cj8yx1tzbs1c4f7xre6l9usz5xfn5xhb
+         このファイルは本番ではない。本番は form.html 側で、
+         https://hook.eu1.make.com/cj8yx1tzbs1c4f7xre6l9usz5xfn5xhb を使う。
+         このファイルのURLを本番用に書き換えないこと。
        ========================================================= */
     const WEBHOOK_URL = "https://hook.eu1.make.com/34xqdenlw9q1uprrbw5oeyl4rky9mt8f";
 
@@ -866,11 +867,12 @@
     const KEMONO_KEYS = /^(縁獣名|生息地|特技|弱点|姿)：/;
 
     /* --- 待ち時間の文言ローテーション ---
-       15秒ごとに切り替え、最後の文言で停止する（ループしない）。 */
+       15秒ごとに切り替え、最後の文言で停止する（ループしない）。
+       無料版（index.html）と文言を統一している。 */
     const WAIT_MESSAGES = [
       '宇宙の記録を照会しています…',
       '138億年分の伏線をさかのぼっています…',
-      'ふたつの縁の共通点を探しています…',
+      '該当する縁を特定しました…',
       '鑑定書を清書しています…'
     ];
     let waitTimer = null;
