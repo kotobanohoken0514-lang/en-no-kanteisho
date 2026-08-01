@@ -31,9 +31,25 @@
     padding: 36px 16px 72px;
   }
 
+  /* ===== 日本語の折り返しを自然にする（スマホでの改行位置対策） ===== */
+  body {
+    word-break: auto-phrase;   /* 文節の切れ目で折り返す */
+    line-break: strict;        /* 句読点や小書き文字が行頭に来ないようにする */
+    text-wrap: pretty;         /* 最終行に1〜2文字だけ残るのを防ぐ */
+  }
+  /* 短い見出し・ボタン類は行の長さを均等に割る */
+  h1, h2, h3,
+  .cta, .paid-cta a, .paid-cta p,
+  .kantei-head-main, .kantei-head-sub, .kantei-head-badge,
+  .field label, .field .hint, .q-num,
+  .sample-label, .free-main, .free-once, .cta-lead,
+  .mini-title, .mini-card, .included-title, .included li,
+  .ease-main, .chips, .legal-link {
+    text-wrap: balance;
+  }
+
   .sheet {
-    width: 100%;
-    max-width: 560px;
+    width: 100%;    max-width: 560px;
     background: var(--washi);
     border-radius: 16px;
     box-shadow:
