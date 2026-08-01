@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2縁まとめ鑑定書</title>
+<title>2縁まとめ鑑定書（テスト）</title>
 <style>
   :root {
     --washi: #f7f2e7;
@@ -92,6 +92,20 @@
     line-height: 1.95;
     color: var(--sumi-dim);
     margin: 0;
+  }
+
+  /* テスト環境である旨の帯 */
+  .testmode-bar {
+    margin: 0 0 18px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    background: #fdf6e3;
+    border: 1px dashed #d6b95f;
+    color: #8a6d1f;
+    font-size: 12px;
+    line-height: 1.7;
+    letter-spacing: 0.04em;
+    text-align: center;
   }
 
   /* session_id 自己診断バナー（決済を通ってきたかを目で確認する用） */
@@ -237,7 +251,7 @@
     h1 { font-size: 27px; }
   }
 
-  /* ===== 証書表示（鑑定結果の映え化）ここから追加 ===== */
+  /* ===== 証書表示（鑑定結果の映え化）ここから ===== */
   .certificate {
     display: none;
     margin-top: 28px;
@@ -317,6 +331,29 @@
     color: var(--sumi);
     margin: 0 0 10px;
   }
+
+  /* 縁獣の5項目（縁獣名／生息地／特技／弱点／姿）を項目立てで表示 */
+  .cert-kv {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 0 0 7px;
+  }
+  .cert-kv-key {
+    flex: 0 0 4.4em;
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    color: var(--gold-soft);
+    white-space: nowrap;
+  }
+  .cert-kv-val {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--sumi);
+  }
+
   .cert-closing {
     margin-top: 22px;
     padding-top: 16px;
@@ -487,12 +524,17 @@
     .gogai-frame { padding: 26px 16px 18px; }
     .gogai-title { font-size: 21px; }
     .gogai-value { font-size: 17px; }
+    .cert-kv-key { flex-basis: 4em; font-size: 12px; }
   }
   /* ===== 証書表示ここまで ===== */
 </style>
 </head>
 <body>
   <main class="sheet">
+    <div class="testmode-bar">
+      これはテスト用ページです。送信先はクローンシナリオ（WEB縁_有料_時間計測）です。
+    </div>
+
     <header>
       <div class="seal">縁之<br>鑑定</div>
       <p class="eyebrow">2縁まとめ鑑定書</p>
@@ -596,9 +638,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     /* =========================================================
-       ★ 本番Makeシナリオを作ったら、そのCustom webhookのURLをここに入れる。
+       ★ テスト用：クローンシナリオ「WEB縁_有料_時間計測」のCustom webhook。
+         本番へ反映するときは、本番の有料webhookに必ず戻すこと。
+         本番URL： https://hook.eu1.make.com/cj8yx1tzbs1c4f7xre6l9usz5xfn5xhb
        ========================================================= */
-    const WEBHOOK_URL = "https://hook.eu1.make.com/cj8yx1tzbs1c4f7xre6l9usz5xfn5xhb";
+    const WEBHOOK_URL = "https://hook.eu1.make.com/34xqdenlw9q1uprrbw5oeyl4rky9mt8f";
 
     /* --- URLから session_id を読み取る --- */
     const params = new URLSearchParams(window.location.search);
@@ -623,6 +667,9 @@
     const certDate = document.getElementById('cert-date');
     const saveCtrl = document.getElementById('save-controls');
 
+    /* 縁獣の項目名（行頭がこれなら項目立てで表示する） */
+    const KEMONO_KEYS = /^(縁獣名|生息地|特技|弱点|姿)：/;
+
     function collect() {
       return {
         session_id: sessionId || '',
@@ -643,6 +690,7 @@
     /* --- 鑑定文を証書レイアウトに流し込む ---
        行頭の目印でスタイルを変える：
        【〜】＝大見出し ／ ①②③④＝小見出し ／
+       縁獣名：などの5項目＝項目立て ／
        「鑑定の結論として」「※」＝結びと免責 ／ それ以外＝本文 */
     function renderCertificate(text) {
       certBody.innerHTML = '';
@@ -661,6 +709,19 @@
           el = document.createElement('h3');
           el.className = 'cert-h3';
           el.textContent = line;
+          para = null;
+        } else if (KEMONO_KEYS.test(line)) {
+          const idx = line.indexOf('：');
+          el = document.createElement('div');
+          el.className = 'cert-kv';
+          const k = document.createElement('span');
+          k.className = 'cert-kv-key';
+          k.textContent = line.slice(0, idx);
+          const v = document.createElement('span');
+          v.className = 'cert-kv-val';
+          v.textContent = line.slice(idx + 1).trim();
+          el.appendChild(k);
+          el.appendChild(v);
           para = null;
         } else if (line.startsWith('鑑定の結論として')) {
           el = document.createElement('p');
@@ -765,7 +826,7 @@
       gogai.classList.remove('show');
       saveCtrl.classList.remove('show');
       rTitle.textContent = '鑑定中';
-      rBody.textContent = '宇宙と交信しています…（鑑定文の生成に10〜20秒ほどかかります。このままお待ちください）';
+      rBody.textContent = '宇宙と交信しています…（鑑定文の生成に1分ほどかかることがあります。画面を閉じずにこのままお待ちください）';
       rStat.textContent = '';
       result.classList.add('show');
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
