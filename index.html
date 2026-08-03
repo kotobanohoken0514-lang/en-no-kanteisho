@@ -140,6 +140,10 @@
     color: var(--sumi);
   }
 
+  /* 補足文（hint）がない質問は、ラベルと入力欄の間隔を少し補う */
+  .field label + input[type="text"],
+  .field label + textarea { margin-top: 4px; }
+
   .field .hint {
     display: block;
     font-size: 12.5px;
@@ -945,6 +949,17 @@
       <p class="sample-quote"><span>「この縁は、あなたの毎日に“笑う予定”を追加するために、<br>宇宙が配置したものです。」</span><br>── 鑑定文より</p>
     </div>
 
+    <div class="included">
+      <p class="included-title">鑑定書に書かれること</p>
+      <ul>
+        <li>あなたとあの人の「縁の称号」</li>
+        <li>2人だけの「発動スキル」</li>
+        <li>この縁に宇宙が費やしたエネルギー</li>
+        <li>もう少し詳しい鑑定文（全文の証書）</li>
+        <li>シェア用の号外画像（保存できます）</li>
+      </ul>
+    </div>
+
     <div class="mini-examples">
       <p class="mini-title">どんな関係でも、鑑定できます</p>
       <div class="mini-card"><span class="mini-tag">夫婦</span>何度けんかしても、夕飯の話で通常運転に戻る人</div>
@@ -960,17 +975,6 @@
         最初の100名を、勝手に「第1期研究員」と呼んでいます。特別な活動はありません。<br>
         鑑定後、よろしければ <a href="https://www.instagram.com/tanoshinda_lab/" target="_blank" rel="noopener" style="color:var(--shu);">Instagram（@tanoshinda_lab）</a>のコメントで感想をお聞かせください。SNSへの投稿は必須ではありません。
       </p>
-    </div>
-
-    <div class="included">
-      <p class="included-title">鑑定書に書かれること</p>
-      <ul>
-        <li>あなたとあの人の「縁の称号」</li>
-        <li>2人だけの「発動スキル」</li>
-        <li>この縁に宇宙が費やしたエネルギー</li>
-        <li>もう少し詳しい鑑定文（全文の証書）</li>
-        <li>シェア用の号外画像（保存できます）</li>
-      </ul>
     </div>
 
     <div class="form-ease">
@@ -994,8 +998,7 @@
         <span class="q-num">質問 1 / 3</span>
         <div class="field">
           <label for="relation1">その人は、あなたにとってどんな人ですか？</label>
-          <span class="hint">例：親友、夫、妻、恋人、きょうだい、職場の先輩、昔の同級生 など</span>
-          <input type="text" id="relation1" placeholder="例：大学時代からの親友">
+          <input type="text" id="relation1" placeholder="例：大学時代からの親友／職場の先輩">
         </div>
       </div>
 
@@ -1262,6 +1265,30 @@
       try { localStorage.setItem(FREE_KEY, '1'); } catch (e) {}
     }
 
+    /* --- 未入力の質問がある確認 ---
+       必須にはしない（気軽さを守る）が、書き漏らしのまま送信されるのを防ぐ。 */
+    const Q_FIELDS = [
+      { id: 'relation1',  label: '質問1（どんな人か）' },
+      { id: 'situation1', label: '質問2（出会ったきっかけ）' },
+      { id: 'episode1',   label: '質問3（印象に残っていること）' }
+    ];
+    function confirmIfBlank() {
+      const empties = Q_FIELDS.filter(function (f) {
+        return !document.getElementById(f.id).value.trim();
+      });
+      if (empties.length === 0) return true;
+      const msg =
+        '未入力の質問が' + empties.length + 'つあります。\n' +
+        '・' + empties.map(function (f) { return f.label; }).join('\n・') + '\n\n' +
+        '書ける範囲が多いほど、鑑定はその関係らしい内容になります。\n' +
+        'このまま鑑定しますか？';
+      if (confirm(msg)) return true;
+      const el = document.getElementById(empties[0].id);
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function () { el.focus({ preventScroll: true }); }, 400);
+      return false;
+    }
+
     btn.addEventListener('click', async function () {
       const data = collect();
 
@@ -1278,6 +1305,8 @@
         alert('どれか1つでも入力してから押してみてください。');
         return;
       }
+
+      if (!confirmIfBlank()) return;
 
       /* --- 送信開始：待ち時間の案内を出す --- */
       btn.disabled = true;

@@ -233,6 +233,10 @@
     letter-spacing: 0.04em;
     color: var(--sumi);
   }
+  /* 補足文（hint）がない質問は、ラベルと入力欄の間隔を少し補う */
+  .field label + input[type="text"],
+  .field label + textarea { margin-top: 4px; }
+
   .field .hint {
     display: block;
     font-size: 12.5px;
@@ -704,8 +708,7 @@
           <span class="q-num">質問 1 / 3</span>
           <div class="field">
             <label for="relation1">その人は、あなたにとってどんな人ですか？</label>
-            <span class="hint">例：親友、夫、妻、恋人、きょうだい、職場の先輩、昔の同級生 など</span>
-            <input type="text" id="relation1" placeholder="例：大学時代からの親友">
+            <input type="text" id="relation1" placeholder="例：大学時代からの親友／職場の先輩">
           </div>
         </div>
 
@@ -737,8 +740,7 @@
           <span class="q-num">質問 1 / 3</span>
           <div class="field">
             <label for="relation2">その人は、あなたにとってどんな人ですか？</label>
-            <span class="hint">例：親友、夫、妻、恋人、きょうだい、職場の先輩、昔の同級生 など</span>
-            <input type="text" id="relation2" placeholder="例：はじめての職場の先輩">
+            <input type="text" id="relation2" placeholder="例：はじめての職場の先輩／中学からの友人">
           </div>
         </div>
 
@@ -1022,11 +1024,41 @@
       return true;
     }
 
+    /* --- 未入力の質問がある確認 ---
+       必須にはしない（気軽さを守る）が、書き漏らしのまま送信されるのを防ぐ。
+       有料は1回かぎりのため、無料版より強めに引き止める文言にしている。 */
+    const Q_FIELDS = [
+      { id: 'relation1',  label: '縁 その一：質問1（どんな人か）' },
+      { id: 'situation1', label: '縁 その一：質問2（出会ったきっかけ）' },
+      { id: 'episode1',   label: '縁 その一：質問3（印象に残っていること）' },
+      { id: 'relation2',  label: '縁 その二：質問1（どんな人か）' },
+      { id: 'situation2', label: '縁 その二：質問2（出会ったきっかけ）' },
+      { id: 'episode2',   label: '縁 その二：質問3（印象に残っていること）' }
+    ];
+    function confirmIfBlank() {
+      const empties = Q_FIELDS.filter(function (f) {
+        return !document.getElementById(f.id).value.trim();
+      });
+      if (empties.length === 0) return true;
+      const msg =
+        '未入力の質問が' + empties.length + 'つあります。\n' +
+        '・' + empties.map(function (f) { return f.label; }).join('\n・') + '\n\n' +
+        '書ける範囲が多いほど、鑑定はそのお二人らしい内容になります。\n' +
+        'この鑑定は1回かぎりです。このまま鑑定しますか？';
+      if (confirm(msg)) return true;
+      const el = document.getElementById(empties[0].id);
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function () { el.focus({ preventScroll: true }); }, 400);
+      return false;
+    }
+
     btn.addEventListener('click', async function () {
       const data = collect();
 
       const err = validate(data);
       if (err) { alert(err); return; }
+
+      if (!confirmIfBlank()) return;
 
       /* --- 送信開始：待ち時間の案内を出す --- */
       btn.disabled = true;
