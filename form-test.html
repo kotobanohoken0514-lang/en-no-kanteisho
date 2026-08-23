@@ -449,14 +449,34 @@
     color: var(--sumi);
   }
 
-  /* 縁獣のイラスト（Vertexが生成した円形エンブレム） */
+  /* 縁獣のイラスト（Vertexが生成した円形エンブレム）
+     元画像は横長の和紙背景つき。中央を正方形に切り出して円形に抜くことで、
+     背景の紙の縁が証書の地色から浮かないようにしている */
   .cert-img-wrap {
     text-align: center;
     margin: 18px 0 4px;
   }
   .cert-img-wrap img {
     width: 62%;
-    max-width: 260px;
+    max-width: 250px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    height: auto;
+    display: inline-block;
+  }
+
+  /* 号外に載せる縁獣（証書より少し小さめ） */
+  .gogai-img-wrap {
+    text-align: center;
+    margin: 4px 0 18px;
+  }
+  .gogai-img-wrap img {
+    width: 46%;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
     height: auto;
     display: inline-block;
   }
@@ -1068,6 +1088,22 @@
           energies.slice(0, 2).join(' ＋ ') + '</b>';
       } else {
         gogaiEnergy.textContent = '';
+      }
+
+      /* 縁獣イラストを、称号・スキルの下（＝エネルギーの上）に置く。
+         鑑定文の [[IMG]] 行からBase64を拾う。画像が無ければ何もしない */
+      const imgLine = text.split('\n').find(function (l) {
+        return l.trim().startsWith('[[IMG]]');
+      });
+      const b64 = imgLine ? imgLine.trim().slice(7).trim() : '';
+      if (b64) {
+        const wrap = document.createElement('div');
+        wrap.className = 'gogai-img-wrap';
+        const img = document.createElement('img');
+        img.src = 'data:image/jpeg;base64,' + b64;
+        img.alt = 'あなたの縁獣';
+        wrap.appendChild(img);
+        gogaiBody.appendChild(wrap);
       }
 
       const now = new Date();
