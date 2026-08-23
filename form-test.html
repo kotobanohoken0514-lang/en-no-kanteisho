@@ -449,6 +449,18 @@
     color: var(--sumi);
   }
 
+  /* 縁獣のイラスト（Vertexが生成した円形エンブレム） */
+  .cert-img-wrap {
+    text-align: center;
+    margin: 18px 0 4px;
+  }
+  .cert-img-wrap img {
+    width: 62%;
+    max-width: 260px;
+    height: auto;
+    display: inline-block;
+  }
+
   .cert-closing {
     margin-top: 22px;
     padding-top: 16px;
@@ -927,10 +939,17 @@
       certBody.innerHTML = '';
       const lines = text.split('\n');
       let para = null;
+      let kemonoImg = null;   /* 縁獣イラストのBase64（[[IMG]]行から拾う） */
       for (const raw of lines) {
         const line = raw.trim();
         if (!line) { para = null; continue; }
         let el;
+        if (line.startsWith('[[IMG]]')) {
+          const b64 = line.slice(7).trim();
+          if (b64) kemonoImg = b64;
+          para = null;
+          continue;
+        }
         if (/^【.+】$/.test(line)) {
           el = document.createElement('h2');
           el.className = 'cert-h2';
@@ -977,6 +996,21 @@
         }
         certBody.appendChild(el);
       }
+
+      /* 縁獣イラストを、結びの直前（＝縁獣の項目のすぐ下）に置く。
+         結びが無ければ末尾に追加する */
+      if (kemonoImg) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cert-img-wrap';
+        const img = document.createElement('img');
+        img.src = 'data:image/jpeg;base64,' + kemonoImg;
+        img.alt = 'あなたの縁獣';
+        wrap.appendChild(img);
+        const closing = certBody.querySelector('.cert-closing');
+        if (closing) certBody.insertBefore(wrap, closing);
+        else certBody.appendChild(wrap);
+      }
+
       const now = new Date();
       certDate.textContent = '発行日　' + now.getFullYear() + '年' +
         (now.getMonth() + 1) + '月' + now.getDate() + '日';
