@@ -92,6 +92,20 @@
     margin: 0;
   }
 
+  /* テスト環境である旨の帯 */
+  .testmode-bar {
+    margin: 0 0 20px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    background: #fdf6e3;
+    border: 1px dashed #d6b95f;
+    color: #8a6d1f;
+    font-size: 12px;
+    line-height: 1.7;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
   /* session_id 自己診断バナー */
   .session-banner {
     margin: 0 0 4px;
@@ -433,6 +447,38 @@
     font-size: 14px;
     line-height: 1.9;
     color: var(--sumi);
+  }
+
+  /* 縁獣のイラスト（Vertexが生成した円形エンブレム）
+     元画像は横長の和紙背景つき。中央を正方形に切り出して円形に抜くことで、
+     背景の紙の縁が証書の地色から浮かないようにしている */
+  .cert-img-wrap {
+    text-align: center;
+    margin: 18px 0 4px;
+  }
+  .cert-img-wrap img {
+    width: 62%;
+    max-width: 250px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    height: auto;
+    display: inline-block;
+  }
+
+  /* 号外に載せる縁獣（証書より少し小さめ） */
+  .gogai-img-wrap {
+    text-align: center;
+    margin: 4px 0 18px;
+  }
+  .gogai-img-wrap img {
+    width: 46%;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    height: auto;
+    display: inline-block;
   }
 
   .cert-closing {
@@ -817,10 +863,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     /* =========================================================
-       ★ 本番用：本番シナリオ「WEB縁_有料検証」のCustom webhook。
-         テスト環境（クローン WEB縁_有料_時間計測）は form-test.html 側で、
-         https://hook.eu1.make.com/34xqdenlw9q1uprrbw5oeyl4rky9mt8f を使う。
-         このファイルのURLをテスト用に書き換えないこと。
+       ★ 本番：シナリオ「WEB縁_有料検証」のCustom webhook。
+         テスト環境は form-test.html 側で、
+         クローンシナリオ「WEB縁_有料_時間計測」を使う。
+         このファイルにテスト用URLを書かないこと。
        ========================================================= */
     const WEBHOOK_URL = "https://hook.eu1.make.com/cj8yx1tzbs1c4f7xre6l9usz5xfn5xhb";
 
@@ -909,10 +955,17 @@
       certBody.innerHTML = '';
       const lines = text.split('\n');
       let para = null;
+      let kemonoImg = null;   /* 縁獣イラストのBase64（[[IMG]]行から拾う） */
       for (const raw of lines) {
         const line = raw.trim();
         if (!line) { para = null; continue; }
         let el;
+        if (line.startsWith('[[IMG]]')) {
+          const b64 = line.slice(7).trim();
+          if (b64) kemonoImg = b64;
+          para = null;
+          continue;
+        }
         if (/^【.+】$/.test(line)) {
           el = document.createElement('h2');
           el.className = 'cert-h2';
@@ -959,6 +1012,21 @@
         }
         certBody.appendChild(el);
       }
+
+      /* 縁獣イラストを、結びの直前（＝縁獣の項目のすぐ下）に置く。
+         結びが無ければ末尾に追加する */
+      if (kemonoImg) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cert-img-wrap';
+        const img = document.createElement('img');
+        img.src = 'data:image/jpeg;base64,' + kemonoImg;
+        img.alt = 'あなたの縁獣';
+        wrap.appendChild(img);
+        const closing = certBody.querySelector('.cert-closing');
+        if (closing) certBody.insertBefore(wrap, closing);
+        else certBody.appendChild(wrap);
+      }
+
       const now = new Date();
       certDate.textContent = '発行日　' + now.getFullYear() + '年' +
         (now.getMonth() + 1) + '月' + now.getDate() + '日';
@@ -1016,6 +1084,22 @@
           energies.slice(0, 2).join(' ＋ ') + '</b>';
       } else {
         gogaiEnergy.textContent = '';
+      }
+
+      /* 縁獣イラストを、称号・スキルの下（＝エネルギーの上）に置く。
+         鑑定文の [[IMG]] 行からBase64を拾う。画像が無ければ何もしない */
+      const imgLine = text.split('\n').find(function (l) {
+        return l.trim().startsWith('[[IMG]]');
+      });
+      const b64 = imgLine ? imgLine.trim().slice(7).trim() : '';
+      if (b64) {
+        const wrap = document.createElement('div');
+        wrap.className = 'gogai-img-wrap';
+        const img = document.createElement('img');
+        img.src = 'data:image/jpeg;base64,' + b64;
+        img.alt = 'あなたの縁獣';
+        wrap.appendChild(img);
+        gogaiBody.appendChild(wrap);
       }
 
       const now = new Date();
