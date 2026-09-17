@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>縁の鑑定書｜マルシェ受付</title>
+<style>
+  :root {
+    --washi: #f7f2e7;
+    --washi-field: #fffdf8;
+    --gold: #c9b784;
+    --gold-soft: #a08b4f;
+    --sumi: #2b2620;
+    --sumi-dim: #6b6355;
+    --sumi-faint: #8a8170;
+    --shu: #c8443b;
+    --field-border: #cdbf9d;
+    --field-focus: #b89a5a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--sumi);
+    background: #211c16;
+    display: flex;
+    justify-content: center;
+    padding: 24px 14px 60px;
+    word-break: auto-phrase;
+    line-break: strict;
+    text-wrap: pretty;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 560px;
+    background: var(--washi);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 0 0 7px var(--washi),
+      inset 0 0 0 8px var(--gold),
+      0 18px 50px rgba(0,0,0,0.45);
+    padding: 30px 22px 28px;
+  }
+
+  header { text-align: center; margin-bottom: 20px; }
+
+  .brand-icon {
+    display: block;
+    width: 64px; height: 64px;
+    margin: 0 auto 10px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--gold-soft);
+    margin: 0 0 8px;
+    padding-left: 0.3em;
+  }
+
+  .main-copy-h1 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--shu);
+    line-height: 1.7;
+    letter-spacing: 0.08em;
+    margin: 2px 0 0;
+  }
+
+  /* ===== 入力 ===== */
+  .field { margin-bottom: 18px; }
+
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+    color: var(--sumi);
+  }
+  .field .hint {
+    display: block;
+    font-size: 12px;
+    color: var(--sumi-faint);
+    margin-bottom: 7px;
+    line-height: 1.7;
+  }
+
+  .field input, .field textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 16px; /* iOSの自動ズーム防止 */
+    line-height: 1.7;
+    color: var(--sumi);
+    background: var(--washi-field);
+    border: 1px solid var(--field-border);
+    border-radius: 9px;
+    padding: 11px 12px;
+  }
+  .field textarea { min-height: 84px; resize: vertical; }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--field-focus);
+    box-shadow: 0 0 0 3px rgba(184,154,90,0.18);
+  }
+
+  .cta {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 17px 16px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--shu);
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+  }
+  .cta:disabled { opacity: 0.55; cursor: default; }
+
+  .err {
+    display: none;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #9a453d;
+    background: #fbefee;
+    border: 1px solid #e2b6b2;
+    border-radius: 9px;
+    padding: 10px 13px;
+    margin-bottom: 14px;
+  }
+  .err.show { display: block; }
+
+  /* ===== 待ち ===== */
+  #waiting { display: none; text-align: center; padding: 40px 0 30px; }
+  #waiting.show { display: block; }
+  .wait-main {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 19px;
+    color: var(--shu);
+    letter-spacing: 0.1em;
+    margin: 0 0 12px;
+  }
+  .wait-sub { font-size: 13.5px; color: var(--sumi-dim); line-height: 1.9; margin: 0; }
+  .dots::after {
+    content: "";
+    animation: dots 1.4s steps(4, end) infinite;
+  }
+  @keyframes dots {
+    0% { content: ""; } 25% { content: "・"; }
+    50% { content: "・・"; } 75% { content: "・・・"; }
+  }
+
+  /* ===== QR ===== */
+  #qrView { display: none; text-align: center; }
+  #qrView.show { display: block; }
+
+  .qr-lead {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 20px;
+    color: var(--shu);
+    letter-spacing: 0.1em;
+    margin: 6px 0 4px;
+  }
+  .qr-sub { font-size: 13.5px; color: var(--sumi-dim); margin: 0 0 16px; line-height: 1.8; }
+
+  .qr-box {
+    display: inline-block;
+    background: #fff;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--field-border);
+  }
+  .qr-box canvas, .qr-box img { display: block; }
+
+  .qr-note {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sumi);
+    background: #f1ead9;
+    border-radius: 9px;
+    padding: 12px 14px;
+    margin: 18px 0 0;
+    line-height: 1.8;
+  }
+
+  .qr-url {
+    font-size: 11px;
+    color: var(--sumi-faint);
+    word-break: break-all;
+    margin: 12px 0 0;
+    line-height: 1.6;
+  }
+
+  .sub-btn {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--gold-soft);
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    border-radius: 11px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+
+    <header>
+      <img class="brand-icon" src="icon.png" alt="楽研" onerror="this.style.display='none'">
+      <p class="eyebrow">マルシェ受付</p>
+      <h1 class="main-copy-h1">縁の鑑定書</h1>
+    </header>
+
+    <!-- ========== 入力 ========== -->
+    <div id="formView">
+      <div class="err" id="err"></div>
+
+      <div class="field">
+        <label for="relation">どんな人ですか</label>
+        <span class="hint">例：夫／中学からの友人／職場の先輩</span>
+        <input type="text" id="relation" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="situation">どこで、どう出会いましたか</label>
+        <span class="hint">例：バーで隣の席になった</span>
+        <textarea id="situation"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="episode">印象に残っていること</label>
+        <span class="hint">例：ラーメンをくれた</span>
+        <textarea id="episode"></textarea>
+      </div>
+
+      <button class="cta" id="submitBtn">鑑定する</button>
+    </div>
+
+    <!-- ========== 待ち ========== -->
+    <div id="waiting">
+      <p class="wait-main">鑑定中<span class="dots"></span></p>
+      <p class="wait-sub">宇宙の記録をさかのぼっています。<br>少しお待ちください。</p>
+    </div>
+
+    <!-- ========== QR ========== -->
+    <div id="qrView">
+      <p class="qr-lead">鑑定書ができました</p>
+      <p class="qr-sub">スマホのカメラで読み取ってください</p>
+
+      <div class="qr-box" id="qrBox"></div>
+
+      <p class="qr-note">このQRは3日で消えます。<br>気に入ったら画面を保存してくださいね。</p>
+
+      <p class="qr-url" id="qrUrl"></p>
+
+      <button class="sub-btn" id="nextBtn">次の人へ</button>
+    </div>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    /* =========================================================
+       マルシェ版シナリオA「縁_マルシェ_鑑定」のCustom webhook。
+       ※ form.html（有料Web版）とは別のURL。混同しないこと。
+       ========================================================= */
+    const WEBHOOK_URL = "https://hook.eu1.make.com/umoop8atw8ug7473u0s491vvbooyz812";
+
+    const formView  = document.getElementById('formView');
+    const waiting   = document.getElementById('waiting');
+    const qrView    = document.getElementById('qrView');
+    const qrBox     = document.getElementById('qrBox');
+    const qrUrlEl   = document.getElementById('qrUrl');
+    const errEl     = document.getElementById('err');
+    const submitBtn = document.getElementById('submitBtn');
+    const nextBtn   = document.getElementById('nextBtn');
+
+    function showErr(msg) {
+      errEl.textContent = msg;
+      errEl.classList.add('show');
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    function clearErr() {
+      errEl.classList.remove('show');
+      errEl.textContent = '';
+    }
+
+    submitBtn.addEventListener('click', async () => {
+      clearErr();
+
+      const data = {
+        relation1:  document.getElementById('relation').value.trim(),
+        situation1: document.getElementById('situation').value.trim(),
+        episode1:   document.getElementById('episode').value.trim()
+      };
+
+      /* 全部空だと代名詞だらけの穴埋め鑑定文になるので、1つは必須 */
+      if (!data.relation1 && !data.situation1 && !data.episode1) {
+        showErr('3つのうち、どれか1つは入力してください。');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      formView.style.display = 'none';
+      waiting.classList.add('show');
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' }, // preflightを避ける
+          body: JSON.stringify(data)
+        });
+        const text = (await res.text()).trim();
+
+        if (res.status === 200 && text.startsWith('http')) {
+          waiting.classList.remove('show');
+          qrBox.innerHTML = '';
+          new QRCode(qrBox, {
+            text: text,
+            width: 260,
+            height: 260,
+            correctLevel: QRCode.CorrectLevel.M
+          });
+          qrUrlEl.textContent = text;
+          qrView.classList.add('show');
+        } else {
+          waiting.classList.remove('show');
+          formView.style.display = '';
+          showErr('うまく鑑定できませんでした。（ステータス ' + res.status + '）\n返ってきた内容：' + text.slice(0, 300));
+        }
+      } catch (e) {
+        waiting.classList.remove('show');
+        formView.style.display = '';
+        showErr('通信に失敗しました。電波を確認して、もう一度お試しください。\n詳細：' + e);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      document.getElementById('relation').value  = '';
+      document.getElementById('situation').value = '';
+      document.getElementById('episode').value   = '';
+      qrBox.innerHTML = '';
+      qrUrlEl.textContent = '';
+      qrView.classList.remove('show');
+      formView.style.display = '';
+      clearErr();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
