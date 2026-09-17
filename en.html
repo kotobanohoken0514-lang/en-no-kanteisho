@@ -38,7 +38,7 @@
     box-shadow: 0 18px 50px rgba(0,0,0,0.45);
   }
 
-  section { padding: 0 26px; }
+  section { padding: 0 22px; }
 
   /* ===== 表紙 ===== */
   .cover {
@@ -53,26 +53,26 @@
   }
   .cover-lead {
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 23px;
+    font-size: 29px;
     font-weight: 600;
-    line-height: 1.85;
+    line-height: 1.8;
     letter-spacing: 0.06em;
     color: var(--sumi);
     margin: 0 0 24px;
   }
-  @media (max-width: 400px) { .cover-lead { font-size: 21px; } }
+  @media (max-width: 400px) { .cover-lead { font-size: 26px; } }
 
   .cover-title {
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 30px;
+    font-size: 36px;
     font-weight: 600;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.28em;
     color: var(--shu);
     margin: 0 0 10px;
     padding-left: 0.3em;
   }
   .cover-sub {
-    font-size: 13.5px;
+    font-size: 16.5px;
     line-height: 1.9;
     color: var(--sumi-dim);
     margin: 0 0 18px;
@@ -80,7 +80,7 @@
   .cover-caution {
     display: inline-block;
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 16px;
+    font-size: 20px;
     letter-spacing: 0.16em;
     color: var(--gold-soft);
     border: 1px solid var(--gold);
@@ -92,7 +92,7 @@
   /* ===== 見出し ===== */
   h2 {
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 19px;
+    font-size: 23px;
     font-weight: 600;
     letter-spacing: 0.1em;
     color: var(--sumi);
@@ -102,77 +102,34 @@
   }
 
   p {
-    font-size: 14.5px;
-    line-height: 2;
+    font-size: 17.5px;
+    line-height: 1.95;
     color: var(--sumi);
     margin: 0 0 14px;
   }
-  p.quiet { color: var(--sumi-dim); font-size: 14px; }
+  p.quiet { color: var(--sumi-dim); font-size: 16px; }
 
   /* ===== 鑑定書の抜粋 ===== */
-  .sample {
-    background: #fffdf8;
-    border: 1px solid var(--gold);
-    border-radius: 10px;
-    padding: 20px 18px 18px;
-    margin: 6px 0 14px;
-  }
-  .sample-tag {
-    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    color: var(--shu);
-    margin: 0 0 10px;
-  }
-  .sample-line { margin: 0 0 9px; }
-  .sample-key {
-    display: block;
-    font-size: 11.5px;
-    letter-spacing: 0.14em;
-    color: var(--gold-soft);
-    margin-bottom: 2px;
-  }
-  .sample-val {
-    display: block;
-    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 17px;
-    line-height: 1.6;
-    color: var(--sumi);
-  }
-  .sample-body {
-    font-size: 13.5px;
-    line-height: 1.95;
-    color: var(--sumi);
-    margin: 12px 0 0;
-    padding-top: 12px;
-    border-top: 1px dashed var(--gold);
-  }
-  .sample-note {
-    font-size: 12px;
-    color: var(--sumi-faint);
-    margin: 0 0 26px;
-    line-height: 1.8;
-  }
 
   /* ===== 手順 ===== */
   .steps { margin: 4px 0 8px; padding: 0; list-style: none; counter-reset: step; }
   .steps li {
     counter-increment: step;
     position: relative;
-    padding-left: 40px;
-    margin-bottom: 16px;
-    font-size: 14.5px;
+    padding-left: 45px;
+    margin-bottom: 19px;
+    font-size: 18px;
     line-height: 1.9;
   }
   .steps li::before {
     content: counter(step);
     position: absolute;
     left: 0; top: 1px;
-    width: 26px; height: 26px;
+    width: 30px; height: 30px;
     border: 1px solid var(--gold);
     border-radius: 50%;
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--gold-soft);
     display: flex;
     align-items: center;
@@ -198,7 +155,7 @@
   }
   .schedule-title {
     font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-    font-size: 20px;
+    font-size: 24px;
     letter-spacing: 0.12em;
     color: var(--shu);
     margin: 0 0 16px;
@@ -206,24 +163,24 @@
   .schedule dl {
     margin: 0;
     display: grid;
-    grid-template-columns: 5.5em 1fr;
+    grid-template-columns: 6.2em 1fr;
     gap: 8px 10px;
     text-align: left;
   }
   .schedule dt {
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 0.1em;
     color: var(--gold-soft);
     padding-top: 3px;
   }
   .schedule dd {
     margin: 0;
-    font-size: 14.5px;
+    font-size: 17.5px;
     line-height: 1.8;
     color: var(--sumi);
   }
   .schedule-note {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.9;
     color: var(--sumi-dim);
     margin: 18px 0 0;
@@ -240,7 +197,7 @@
     text-align: center;
   }
   .foot-lead {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.9;
     color: var(--sumi-dim);
     margin: 0 0 16px;
@@ -248,7 +205,7 @@
   .foot-btn {
     display: inline-block;
     padding: 13px 30px;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-decoration: none;
@@ -257,7 +214,7 @@
     border-radius: 999px;
   }
   .foot-name {
-    font-size: 11.5px;
+    font-size: 13px;
     letter-spacing: 0.1em;
     color: var(--gold-soft);
     margin: 24px 0 0;
@@ -279,30 +236,6 @@
       <h2>何を研究しているのか</h2>
       <p>家族、友達、恋人、仕事仲間。あなたと誰かが出会った話を聞いて、その縁に勝手な称号やスキル、「宇宙が張っていた伏線」をつけます。</p>
       <p>自分の人生にあった縁を、誰かと一緒に面白がる、10分ほどの研究です。</p>
-    </section>
-
-    <section>
-      <h2>こんなものができます</h2>
-
-      <div class="sample">
-        <p class="sample-tag">鑑定書より｜獲得した称号と発動スキル</p>
-        <div class="sample-line">
-          <span class="sample-key">称号</span>
-          <span class="sample-val">糖分補給型運命共同体</span>
-        </div>
-        <div class="sample-line">
-          <span class="sample-key">スキル</span>
-          <span class="sample-val">沈黙のスイートチャージ</span>
-        </div>
-        <p class="sample-body">発動条件：会話が途切れて気まずい沈黙が3秒以上続いたとき、どちらからともなくポケットをまさぐると自動で発動する。<br>副作用：あまりの甘酸っぱさに、お互いニヤニヤが止まらなくなって周囲の人から生暖かい目で見つめられる。</p>
-      </div>
-
-      <div class="sample">
-        <p class="sample-tag">鑑定書より｜宇宙の消費エネルギー</p>
-        <p class="sample-body" style="border:0; padding-top:0; margin-top:0;">5200兆キロカロリー。これは、駄菓子屋で売っているあの四角い一口チョコ、約104兆個分に相当する莫大なエネルギーです。<br>それなのに、当事者は気づいてないどころか、わーいチョコだーと大はしゃぎでその場でパクッと食べて、ただの甘い夜として片付けようとしていたのだから、宇宙、報われなさすぎやし。</p>
-      </div>
-
-      <p class="sample-note">これは、まだ鑑定書の一部です。このあと宇宙は、「例えるならこんな奇跡」や「張っていた伏線」まで持ち出して、さらに話を大きくします。</p>
     </section>
 
     <section>
