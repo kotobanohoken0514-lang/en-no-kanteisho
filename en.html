@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>縁の鑑定書｜人生楽しんだもん価値研究所</title>
+<style>
+  :root {
+    --washi: #f7f2e7;
+    --washi-deep: #f1ead9;
+    --gold: #c9b784;
+    --gold-soft: #a08b4f;
+    --sumi: #2b2620;
+    --sumi-dim: #6b6355;
+    --sumi-faint: #8a8170;
+    --shu: #c8443b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--sumi);
+    background: #211c16;
+    display: flex;
+    justify-content: center;
+    padding: 0 0 40px;
+    word-break: auto-phrase;
+    line-break: strict;
+    text-wrap: pretty;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 560px;
+    background: var(--washi);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+  }
+
+  section { padding: 0 26px; }
+
+  /* ===== 表紙 ===== */
+  .cover {
+    padding: 48px 26px 44px;
+    text-align: center;
+    border-bottom: 1px solid var(--gold);
+  }
+  .cover img {
+    width: 72px; height: 72px;
+    margin: 0 auto 18px;
+    display: block;
+  }
+  .cover-lead {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 1.85;
+    letter-spacing: 0.06em;
+    color: var(--sumi);
+    margin: 0 0 24px;
+  }
+  @media (max-width: 400px) { .cover-lead { font-size: 21px; } }
+
+  .cover-title {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--shu);
+    margin: 0 0 10px;
+    padding-left: 0.3em;
+  }
+  .cover-sub {
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--sumi-dim);
+    margin: 0 0 18px;
+  }
+  .cover-caution {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--sumi-faint);
+    margin: 0;
+  }
+
+  /* ===== 見出し ===== */
+  h2 {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--sumi);
+    margin: 38px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gold);
+  }
+
+  p {
+    font-size: 14.5px;
+    line-height: 2;
+    color: var(--sumi);
+    margin: 0 0 14px;
+  }
+  p.quiet { color: var(--sumi-dim); font-size: 14px; }
+
+  /* ===== 鑑定書の抜粋 ===== */
+  .sample {
+    background: #fffdf8;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 20px 18px 18px;
+    margin: 6px 0 14px;
+  }
+  .sample-tag {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--shu);
+    margin: 0 0 10px;
+  }
+  .sample-line { margin: 0 0 9px; }
+  .sample-key {
+    display: block;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    color: var(--gold-soft);
+    margin-bottom: 2px;
+  }
+  .sample-val {
+    display: block;
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--sumi);
+  }
+  .sample-body {
+    font-size: 13.5px;
+    line-height: 1.95;
+    color: var(--sumi);
+    margin: 12px 0 0;
+    padding-top: 12px;
+    border-top: 1px dashed var(--gold);
+  }
+  .sample-note {
+    font-size: 12px;
+    color: var(--sumi-faint);
+    margin: 0 0 26px;
+    line-height: 1.8;
+  }
+
+  /* ===== 手順 ===== */
+  .steps { margin: 4px 0 8px; padding: 0; list-style: none; counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 16px;
+    font-size: 14.5px;
+    line-height: 1.9;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 1px;
+    width: 26px; height: 26px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 14px;
+    color: var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== 但し書き ===== */
+  .caution {
+    background: var(--washi-deep);
+    border-radius: 10px;
+    padding: 20px 18px;
+    margin: 6px 0 10px;
+  }
+  .caution p:last-child { margin-bottom: 0; }
+
+  /* ===== 出店予定 ===== */
+  .schedule {
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 24px 20px;
+    margin: 6px 0 10px;
+    text-align: center;
+  }
+  .schedule-title {
+    font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 20px;
+    letter-spacing: 0.12em;
+    color: var(--shu);
+    margin: 0 0 16px;
+  }
+  .schedule dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 5.5em 1fr;
+    gap: 8px 10px;
+    text-align: left;
+  }
+  .schedule dt {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--gold-soft);
+    padding-top: 3px;
+  }
+  .schedule dd {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: var(--sumi);
+  }
+  .schedule-note {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--sumi-dim);
+    margin: 18px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+  }
+
+  /* ===== 足 ===== */
+  footer {
+    margin-top: 40px;
+    padding: 28px 26px 34px;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+  }
+  .foot-lead {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--sumi-dim);
+    margin: 0 0 16px;
+  }
+  .foot-btn {
+    display: inline-block;
+    padding: 13px 30px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: #fff;
+    background: var(--shu);
+    border-radius: 999px;
+  }
+  .foot-name {
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: var(--gold-soft);
+    margin: 24px 0 0;
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+
+    <div class="cover">
+      <img src="icon.png" alt="人生楽しんだもん価値研究所" onerror="this.style.display='none'">
+      <p class="cover-lead">あなたと、あの人が<br>出会った理由。<br>宇宙に大げさに<br>調べさせます。</p>
+      <p class="cover-title">縁の鑑定書</p>
+      <p class="cover-sub">世界一どうでもいい、<br>でも捨てられない鑑定書です。</p>
+      <p class="cover-caution">※未来や相性を占うものではありません。</p>
+    </div>
+
+    <section>
+      <h2>これは何ですか？</h2>
+      <p>家族、友達、恋人、仕事仲間。あなたと誰かが出会った話を聞いて、その縁に勝手な称号やスキル、宇宙が張っていた伏線をつけます。</p>
+      <p>答えを出すものでも、未来を占うものでもありません。何でもなかった出会いを、少し笑えて、少し大切に思える形にする実験です。</p>
+    </section>
+
+    <section>
+      <h2>こんなものができます</h2>
+
+      <div class="sample">
+        <p class="sample-tag">鑑定書より｜獲得した称号と発動スキル</p>
+        <div class="sample-line">
+          <span class="sample-key">称号</span>
+          <span class="sample-val">糖分補給型運命共同体</span>
+        </div>
+        <div class="sample-line">
+          <span class="sample-key">スキル</span>
+          <span class="sample-val">沈黙のスイートチャージ</span>
+        </div>
+        <p class="sample-body">発動条件：会話が途切れて気まずい沈黙が3秒以上続いたとき、どちらからともなくポケットをまさぐると自動で発動する。<br>副作用：あまりの甘酸っぱさに、お互いニヤニヤが止まらなくなって周囲の人から生暖かい目で見つめられる。</p>
+      </div>
+
+      <div class="sample">
+        <p class="sample-tag">鑑定書より｜宇宙の消費エネルギー</p>
+        <p class="sample-body" style="border:0; padding-top:0; margin-top:0;">5200兆キロカロリー。これは、駄菓子屋で売っているあの四角い一口チョコ、約104兆個分に相当する莫大なエネルギーです。<br>それなのに、当事者は気づいてないどころか、わーいチョコだーと大はしゃぎでその場でパクッと食べて、ただの甘い夜として片付けようとしていたのだから、宇宙、報われなさすぎやし。</p>
+      </div>
+
+      <p class="sample-note">これは鑑定書の一部です。実際の鑑定書には、このほかに「例えるならこんな奇跡」「宇宙が張っていた伏線」などが加わります。</p>
+    </section>
+
+    <section>
+      <h2>対面ではこうします</h2>
+      <ol class="steps">
+        <li>鑑定したい相手との出会いを、所長（私）に話してください</li>
+        <li>所長が質問しながら、スマホに入力します</li>
+        <li>AI研究員が、その縁を大げさに鑑定します</li>
+        <li>できあがった鑑定書を、QRコードでお渡しします</li>
+      </ol>
+      <p class="quiet">本名や住所などの個人情報は必要ありません。話したくないことは、話さなくて大丈夫です。</p>
+      <p class="quiet">お渡しするQRは、鑑定した日から3日で見られなくなります。気に入ったら、その場で画面を保存してください。</p>
+    </section>
+
+    <section>
+      <h2>先に言っておきます</h2>
+      <div class="caution">
+        <p>所長は占い師ではありません。AI研究員も、あなたの運命を知っているわけではありません。</p>
+        <p>ただ、誰かとの出会いを一緒に振り返って、「そんな見方もできるかも」と笑うための鑑定書です。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>対面でお会いするとき</h2>
+      <div class="schedule">
+        <p class="schedule-title">ご縁、はじめました。</p>
+        <dl>
+          <dt>料金</dt>
+          <dd>1回 500円（現金・PayPay）</dd>
+          <dt>時間</dt>
+          <dd>おひとり10〜15分ほど（目安）</dd>
+          <dt>お渡し</dt>
+          <dd>QRコード。3日で見られなくなります</dd>
+        </dl>
+        <p class="schedule-note">次にどこへ出るかは、Instagramでお知らせします。</p>
+      </div>
+    </section>
+
+    <footer>
+      <p class="foot-lead">研究のようすは、こちらに。</p>
+      <a class="foot-btn" href="https://www.instagram.com/tanoshinda_lab/" target="_blank" rel="noopener">Instagram</a>
+      <p class="foot-name">人生楽しんだもん価値研究所</p>
+    </footer>
+
+  </main>
+</body>
+</html>
